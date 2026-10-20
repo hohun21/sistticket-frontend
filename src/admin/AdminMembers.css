@@ -1,0 +1,484 @@
+/* =========================
+   회원 관리 페이지
+========================= */
+
+.admin-members {
+    width: 100%;
+    min-width: 0;
+    color: #202938;
+    box-sizing: border-box;
+}
+
+.admin-members *,
+.admin-members *::before,
+.admin-members *::after {
+    box-sizing: border-box;
+}
+
+.admin-members h2 {
+    margin: 0 0 26px;
+    color: #202938;
+    font-size: 28px;
+    font-weight: 750;
+    letter-spacing: -0.8px;
+}
+
+/* =========================
+   검색 및 필터
+========================= */
+
+.members-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e8ebf2;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgb(25 35 60 / 3%);
+}
+
+.members-toolbar input,
+.members-toolbar select {
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid #e0e5ee;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #344054;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+.members-toolbar input {
+    flex: 1;
+    min-width: 220px;
+}
+
+.members-toolbar input::placeholder {
+    color: #a0a8b7;
+}
+
+.members-toolbar select {
+    min-width: 125px;
+    cursor: pointer;
+}
+
+.members-toolbar input:focus,
+.members-toolbar select:focus {
+    border-color: #6c63e8;
+    box-shadow: 0 0 0 3px rgb(108 99 232 / 12%);
+}
+
+/* =========================
+   검색 결과
+========================= */
+
+.members-result-count {
+    margin: 0 0 14px;
+    color: #7b8497;
+    font-size: 13px;
+}
+
+.members-result-count strong {
+    color: #635bdb;
+    font-weight: 750;
+}
+
+/* =========================
+   회원 테이블
+========================= */
+
+.members-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid #e8ebf2;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgb(25 35 60 / 3%);
+}
+
+.members-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+}
+
+.members-table thead th {
+    padding: 17px 20px;
+    background: #f8f9fc;
+    border-bottom: 1px solid #e8ebf2;
+    color: #7b8497;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.members-table tbody td {
+    padding: 19px 20px;
+    border-bottom: 1px solid #eff1f6;
+    color: #495467;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.members-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.members-table tbody tr:hover {
+    background: #fafaff;
+}
+
+.members-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 회원 번호 */
+.members-table tbody td:first-child {
+    color: #8b94a5;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+/* 이름 */
+.members-table tbody td:nth-child(2) {
+    color: #263247;
+    font-weight: 650;
+}
+
+/* 이메일 */
+.members-table tbody td:nth-child(3) {
+    color: #657087;
+}
+
+/* 검색 결과가 없을 때 */
+.members-empty {
+    height: 180px;
+    color: #929bad !important;
+    font-size: 14px !important;
+    text-align: center;
+}
+
+/* =========================
+   권한 및 상태 뱃지
+========================= */
+
+.member-role,
+.member-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 26px;
+    padding: 5px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.member-role.role-admin {
+    background: #f0eaff;
+    color: #7048c8;
+}
+
+.member-role.role-user {
+    background: #edf2f8;
+    color: #53647b;
+}
+
+.member-status.status-active {
+    background: #e4f7ed;
+    color: #16815b;
+}
+
+.member-status.status-inactive {
+    background: #fff0e5;
+    color: #b65c24;
+}
+
+/* =========================
+   로딩 및 오류 화면
+========================= */
+
+.admin-members-loading,
+.admin-members-error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 260px;
+    padding: 32px;
+    background: #ffffff;
+    border: 1px solid #e8ebf2;
+    border-radius: 14px;
+    color: #7b8497;
+    font-size: 14px;
+    text-align: center;
+}
+
+.admin-members-error h2 {
+    margin-bottom: 12px;
+    color: #d14343;
+    font-size: 20px;
+}
+
+.admin-members-error p {
+    margin: 0;
+    line-height: 1.7;
+}
+
+/* =========================
+   반응형
+========================= */
+
+@media (max-width: 768px) {
+    .admin-members h2 {
+        font-size: 23px;
+        margin-bottom: 20px;
+    }
+
+    .members-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .members-toolbar input,
+    .members-toolbar select {
+        width: 100%;
+        min-width: 0;
+        flex: auto;
+    }
+
+    .members-table thead th,
+    .members-table tbody td {
+        padding: 15px;
+    }
+}
+/* =========================
+   회원 상세 모달
+========================= */
+
+/* 배경 오버레이 */
+.member-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    background: rgba(18, 20, 38, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+/* 모달 본체 */
+.member-modal {
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    overflow-y: auto;
+
+    padding: 0;
+    color: #292d42;
+    background-color: #ffffff;
+    color-scheme: light;
+
+    border: 1px solid #ececf4;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+    text-align: left;
+    font-family: inherit;
+}
+
+/* 상단 제목 */
+.member-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 22px 24px;
+    border-bottom: 1px solid #eeeef5;
+}
+
+.member-modal-header h2 {
+    margin: 0;
+    color: #292d42;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.member-modal-close {
+    display: grid;
+    place-items: center;
+
+    width: 34px;
+    height: 34px;
+    padding: 0;
+
+    color: #777b90;
+    background: #f5f5fa;
+    border: none;
+    border-radius: 8px;
+
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.member-modal-close:hover {
+    color: #6243cf;
+    background: #efebff;
+}
+
+/* 회원 정보 영역 */
+.member-modal-body {
+    padding: 10px 24px;
+}
+
+.member-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    min-height: 56px;
+    padding: 14px 0;
+
+    border-bottom: 1px solid #f0f0f6;
+}
+
+.member-detail-row:last-child {
+    border-bottom: none;
+}
+
+.member-detail-row > span,
+.member-detail-row > label {
+    flex-shrink: 0;
+    color: #85899e;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.member-detail-row > strong {
+    min-width: 0;
+    color: #34384f;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+/* 비밀번호 입력창과 선택창 */
+.member-modal input,
+.member-modal select {
+    box-sizing: border-box;
+    width: 190px;
+    max-width: 60%;
+    min-width: 0;
+    height: 38px;
+    margin-left: auto;
+    padding: 0 12px;
+
+    color: #34384f;
+    background-color: #ffffff;
+    color-scheme: light;
+
+    border: 1px solid #dfe2ee;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 400;
+
+    outline: none;
+    box-shadow: none;
+}
+
+.member-modal input::placeholder {
+    color: #a0a4b5;
+}
+
+.member-modal input:focus,
+.member-modal select:focus {
+    border-color: #8063e7;
+    box-shadow: 0 0 0 3px rgba(128, 99, 231, 0.12);
+}
+
+/* 하단 버튼 영역 */
+.member-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    padding: 16px 24px 22px;
+    border-top: 1px solid #eeeef5;
+}
+
+/* 수정 및 닫기 버튼 */
+.member-modal-confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 68px;
+    min-height: 44px;
+    padding: 10px 20px;
+
+    color: #ffffff;
+    background: #7456df;
+    border: none;
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.member-modal-confirm:hover {
+    background: #6243cf;
+}
+
+/* 작은 화면 */
+@media (max-width: 520px) {
+    .member-modal-backdrop {
+        padding: 12px;
+    }
+
+    .member-modal-header {
+        padding: 20px;
+    }
+
+    .member-modal-header h2 {
+        font-size: 20px;
+    }
+
+    .member-modal-body {
+        padding: 10px 20px;
+    }
+
+    .member-detail-row {
+        gap: 10px;
+    }
+
+    .member-modal-footer {
+        padding: 16px 20px 20px;
+    }
+}

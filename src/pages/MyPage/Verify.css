@@ -1,0 +1,95 @@
+/* src/pages/MyPage/Verify.css */
+
+.verify-page-wrapper {
+  background-color: #0b0c10;
+  color: #f4f4f6;
+  font-family: 'Pretendard', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.verify-container {
+  background: #1b1d26;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid #30323d;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.verify-container h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.verify-container p {
+  color: #999cab;
+  font-size: 14px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.input-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #30323d;
+  background: #11131a;
+  color: #f4f4f6;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+/* JS로 띄우던 display: none 처리를 없애고 React 조건부 렌더링으로 대체 */
+.error-message {
+  color: #ff4d4d;
+  font-size: 13px;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: #4338ca;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #999cab;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link:hover {
+  color: #f4f4f6;
+  text-decoration: underline;
+}

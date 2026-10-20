@@ -1,0 +1,29 @@
+.admin-localhost-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    margin: auto 16px 24px;
+    padding: 13px 16px;
+
+    color: #ffffff;
+    background: #252742;
+    border: 1px solid #383b5c;
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-localhost-button:hover {
+    background: #303353;
+    border-color: #7856e8;
+}
+
+.admin-localhost-button span {
+    font-size: 17px;
+}

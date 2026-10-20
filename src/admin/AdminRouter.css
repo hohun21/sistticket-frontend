@@ -1,0 +1,6 @@
+/* NavLink는 기존 button 대신 a 태그를 렌더링하므로 링크 기본 스타일만 초기화합니다. */
+.admin-nav-item {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}

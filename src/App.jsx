@@ -5,10 +5,12 @@ import AdminPlaceholderPage from "./admin/AdminPlaceholderPage";
 import AdminMembers from "./admin/AdminMembers.jsx";
 import Login from "./member/Login.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
+import SeatSelect from "./seat/SeatSelect.jsx";
 
 function App() {
     return (
         <Routes>
+            <Route path="/seat/select" element={<SeatSelect />} />
             {/*관리자 페이지*/}
             <Route element={<AdminRoute/>}>
                 <Route path="/admin" element={<AdminLayout/>}>

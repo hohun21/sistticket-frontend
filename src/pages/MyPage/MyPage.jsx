@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './MyPage.css';
 
 function MyPage() {
+  const navigate = useNavigate();
+
   const [userName, setUserName] = useState('');
   
-  // 처음에 작성하셨던 더미 데이터를 배열 형태로 세팅 (isReviewed: false 추가)
   const [tickets, setTickets] = useState([
     {
       orderDetailId: 999,
@@ -27,7 +28,6 @@ function MyPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 1. 유저 정보 호출 (이름 가져오기용)
         const userResponse = await fetch('/api/mypage/user-info', {
           method: 'GET',
           credentials: 'include',
@@ -37,9 +37,8 @@ function MyPage() {
           const userData = await userResponse.json();
           setUserName(userData.name);
         } else {
-          // 테스트 시 로그인이 안 되어있어서 튕기는 걸 막으려면 아래 두 줄을 주석 처리하세요.
-          alert('로그인이 필요한 서비스입니다.');
-          window.location.href = 'http://localhost:80/login';
+          alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
+          navigate('/member/login');
           return;
         }
 
@@ -63,7 +62,7 @@ function MyPage() {
     };
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const openReviewModal = (orderDetailId) => {
     setSelectedOrderId(orderDetailId);
@@ -96,9 +95,14 @@ function MyPage() {
         body: formData,
       });
 
+      if (response.status === 401 || response.status === 403) {
+        alert('로그인이 풀렸습니다. 다시 로그인해 주세요.');
+        navigate('/member/login');
+        return;
+      }
+
       const result = await response.json();
 
-      // 성공 시 버튼을 '리뷰 작성 완료'로 변경
       if (response.ok && result.success) {
         alert(result.message || '리뷰가 성공적으로 등록되었습니다!');
         
@@ -180,7 +184,6 @@ function MyPage() {
         </main>
       </div>
 
-      {/* 처음 작성하셨던 모달 폼 코드를 그대로 복구했습니다. */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">

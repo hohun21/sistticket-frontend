@@ -5,7 +5,6 @@ import './Edit.css';
 function Edit() {
   const navigate = useNavigate();
 
-  // 처음에는 빈칸으로 비워둡니다.
   const [email, setEmail] = useState(''); 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -21,13 +20,12 @@ function Edit() {
 
         if (response.ok) {
           const data = await response.json();
-          // 받아온 진짜 정보로 화면 업데이트
           setName(data.name);
           setEmail(data.email);
           setPhone(data.phone);
         } else {
           alert('로그인이 필요한 서비스입니다.');
-          window.location.href = 'http://localhost:80/login';
+          navigate('/member/login');
         }
       } catch (error) {
         console.error('Error fetching user info:', error);
@@ -35,9 +33,8 @@ function Edit() {
     };
 
     fetchUserInfo();
-  }, []); // 빈 배열을 넣어 처음에 딱 한 번만 실행되게 설정
+  }, []);
 
-  // 폼 제출 함수
   const submitEdit = async (event) => {
     event.preventDefault();
 
@@ -59,12 +56,16 @@ function Edit() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        alert(result.message || '수정되었습니다.');
-        navigate('/mypage'); // 성공 시 메인 마이페이지로 이동
+        if (password !== '') {
+          alert('비밀번호가 변경되었습니다. 안전을 위해 다시 로그인해 주세요.');
+          navigate('/member/login'); 
+        } else {
+          alert(result.message || '수정되었습니다.');
+          navigate('/mypage'); 
+        }
       } else {
         alert(result.message || '정보 수정 중 오류가 발생했습니다.');
         if (response.status === 403) {
-          // 세션 만료 등 권한 오류 시 다시 인증 페이지로
           navigate('/mypage/verify?target=edit');
         }
       }
@@ -78,7 +79,6 @@ function Edit() {
     <div className="edit-page-wrapper">
       <div className="mypage-container">
         
-        {/* 사이드바 */}
         <aside className="sidebar">
           <h2>마이페이지</h2>
           <ul>
@@ -88,7 +88,6 @@ function Edit() {
           </ul>
         </aside>
 
-        {/* 메인 콘텐츠 */}
         <main className="content">
           <h1>회원 정보 수정</h1>
           <p className="subtitle">안전한 서비스 이용을 위해 개인 정보를 최신 상태로 유지해 주세요.<br />이름과 이메일은 변경할 수 없습니다.</p>
@@ -97,7 +96,6 @@ function Edit() {
             
             <div className="form-group">
               <label>이메일 (아이디)</label>
-              {/* React에서는 readOnly를 대문자 O로 적어야 합니다 */}
               <input type="text" value={email} readOnly />
             </div>
             

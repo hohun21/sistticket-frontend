@@ -1,0 +1,205 @@
+/* MyReviews.css */
+
+/* 리뷰가 없을 때 표시할 빈 화면 스타일 */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #1a1c29;
+    border-radius: 12px;
+    color: #888;
+    font-size: 16px;
+    margin-top: 20px;
+    border: 1px dashed #3a3d4f;
+}
+
+/* 리뷰 리스트 컨테이너 */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+/* 개별 리뷰 카드 전체 영역 */
+.review-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: #1a1c29;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #2a2d3e;
+    gap: 20px;
+}
+
+/* 마우스 올렸을 때 카드 살짝 떠오르는 효과 */
+.review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border-color: #3a3d4f;
+}
+
+/* 리뷰 텍스트 정보(왼쪽) 영역 */
+.review-card .ticket-info {
+    flex: 1;
+}
+
+/* 💡 공연 제목과 수정/삭제 버튼을 감싸는 상단 헤더 영역 */
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px; /* 제목과 아래 내용 사이 간격 */
+}
+
+/* 공연 제목 스타일 */
+.review-card .ticket-info h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #dc6bff; 
+}
+
+/* 💡 별점과 작성일을 감싸는 박스 (상하 간격 넉넉하게 조정) */
+.review-meta-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* 별점과 작성일 사이 간격 */
+    margin-bottom: 16px; /* 메타 정보와 본문 텍스트 사이 간격 */
+}
+
+/* 별점 스타일 */
+.review-rating {
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* 작성일 스타일 */
+.review-date {
+    font-family: 'Courier New', Courier, monospace; 
+    font-size: 13px;
+    color: #aaa;
+    margin: 0;
+}
+
+/* 리뷰 본문 텍스트 스타일 */
+.review-text {
+    color: #e0e0e0;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    white-space: pre-wrap; /* 엔터 친 부분 줄바꿈 유지 */
+    word-break: keep-all;  /* 단어 단위로 끊어지게 */
+    background-color: #0f111a;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 3px solid #dc6bff; /* 왼쪽 포인트 라인 */
+}
+
+/* 첨부 이미지(오른쪽) 영역 */
+.review-image-container {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #0f111a;
+    border: 1px solid #3a3d4f;
+    align-self: center; /* 카드 내에서 수직 가운데 정렬 */
+}
+
+/* 실제 이미지 태그 스타일 */
+.review-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율 유지하며 꽉 채우기 */
+    transition: transform 0.3s ease;
+}
+
+/* 이미지에 마우스 올렸을 때 살짝 확대 */
+.review-image-container img:hover {
+    transform: scale(1.08);
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.page-btn {
+    background-color: #1a1c29;
+    color: #aaa;
+    border: 1px solid #3a3d4f;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+    background-color: #2a2d3e;
+    color: #fff;
+    border-color: #fff;
+}
+
+.page-btn.active {
+    background-color: #dc6bff;
+    color: #fff;
+    border-color: #dc6bff;
+    font-weight: bold;
+}
+
+.page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* 💡 수정/삭제 버튼 그룹 (공연 제목 우측에 나란히 배치) */
+.card-action-btns {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.action-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #3a3d4f;
+    transition: all 0.2s ease;
+}
+
+.action-btn.edit-btn {
+    background-color: #1a1c29;
+    color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.action-btn.edit-btn:hover {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.action-btn.delete-btn {
+    background-color: #1a1c29;
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+.action-btn.delete-btn:hover {
+    background-color: #ef4444;
+    color: #fff;
+}

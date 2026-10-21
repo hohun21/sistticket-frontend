@@ -309,3 +309,116 @@
         transition-duration: 0.01ms !important;
     }
 }
+
+/* 전화번호 입력 행 */
+.phone-number-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+/* 전화번호 입력창과 셀렉트 */
+.login-form-group .phone-number-row input,
+.login-form-group .phone-number-row select {
+    height: 49px;
+    min-width: 0;
+    padding: 0 8px;
+    border: 1px solid #30354b;
+    border-radius: 9px;
+    outline: none;
+    background: #0e1120;
+    color: var(--login-text);
+    font-size: 14px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* 앞자리 선택 */
+.login-form-group .phone-number-row select {
+    flex: 0 0 82px;
+    cursor: pointer;
+}
+
+/* 가운데와 마지막 번호 */
+.login-form-group .phone-number-row input {
+    flex: 1;
+    width: 0;
+}
+
+/* 포커스 효과 */
+.login-form-group .phone-number-row input:focus,
+.login-form-group .phone-number-row select:focus {
+    border-color: var(--login-primary);
+    box-shadow: 0 0 0 3px rgba(232, 184, 109, 0.1);
+}
+
+/* 하이픈 */
+.phone-hyphen {
+    color: var(--login-muted);
+    flex-shrink: 0;
+}
+
+/* 비밀번호 일치 여부 */
+.password-match {
+    margin: 8px 0 0;
+    font-size: 12px;
+}
+
+.password-match.success {
+    color: #9ce2b8;
+}
+
+.password-match.error {
+    color: #ff9eaa;
+}
+
+/* 비활성화된 버튼 */
+.login-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+/* 아이디 찾기 결과 */
+.find-id-result {
+    text-align: center;
+    padding: 10px 0 0;
+}
+
+.find-id-result p {
+    margin: 0 0 18px;
+    color: var(--login-muted);
+    font-size: 14px;
+}
+
+.find-id-result strong {
+    display: block;
+    padding: 18px 12px;
+    border: 1px solid rgba(232, 184, 109, 0.25);
+    border-radius: 9px;
+    background: #0e1120;
+    color: var(--login-primary);
+    font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.find-id-login-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    margin-top: 22px;
+    border-radius: 9px;
+    background: var(--login-primary);
+    color: #171717;
+    font-size: 15px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.find-id-login-button:hover {
+    background: var(--login-primary-hover);
+}

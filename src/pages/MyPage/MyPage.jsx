@@ -32,15 +32,16 @@ function MyPage() {
           method: 'GET',
           credentials: 'include',
         });
+        const contentType = userResponse.headers.get("content-type");
 
-        if (userResponse.ok) {
-          const userData = await userResponse.json();
-          setUserName(userData.name);
-        } else {
+        if (!userResponse.ok || (contentType && !contentType.includes("application/json"))) {
           alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
           navigate('/member/login');
           return;
         }
+
+        const userData = await userResponse.json();
+        setUserName(userData.name);
 
         // 2. 티켓 예매 내역 호출 (더미 데이터 확인을 위해 연동 부분 주석 처리)
         /*
@@ -58,6 +59,8 @@ function MyPage() {
         */
       } catch (error) {
         console.error('Error fetching data:', error);
+        alert('세션이 만료되었거나 서버 통신에 실패했습니다.');
+        navigate('/member/login');
       }
     };
 

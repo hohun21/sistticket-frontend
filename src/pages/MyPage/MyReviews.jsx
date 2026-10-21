@@ -27,26 +27,30 @@ function MyReviews() {
             credentials: 'include',
             });
 
-            if(response.ok){
-                const data = await response.json();
-                if(data.success){
-                    setReviews(data.reviews);
-                    setTotalPages(data.totalPages);
-                }
+            const contentType = response.headers.get("content-type");
+
+            if (!response.ok || (contentType && !contentType.includes("application/json"))) {
+                alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
+                navigate('/member/login');
+                return;
             }
-            else{
-                alert('로그인이 필요한 서비스입니다.');
-                window.location.href = 'http://localhost:80/login';
+
+            const data = await response.json();
+            if(data.success){
+                setReviews(data.reviews);
+                setTotalPages(data.totalPages);
             }
         } catch (error){
             console.error('Error fetching reviews:', error);
+            alert('세션이 만료되었거나 서버 통신에 실패했습니다.');
+            navigate('/member/login');
         } finally {
             setLoading(false);
         }
     };
 
     fetchMyReviews();
-  }, [currentPage]);
+  }, [currentPage, navigate]);
 
   const handleDelete = async (reviewId) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {

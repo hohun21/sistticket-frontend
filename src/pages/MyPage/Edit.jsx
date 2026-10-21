@@ -8,6 +8,7 @@ function Edit() {
   const [email, setEmail] = useState(''); 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [originalPhone, setOriginalPhone] = useState(''); 
   const [password, setPassword] = useState('');
 
   useEffect(() => {
@@ -18,25 +19,47 @@ function Edit() {
           credentials: 'include',
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          setName(data.name);
-          setEmail(data.email);
-          setPhone(data.phone);
-        } else {
-          alert('로그인이 필요한 서비스입니다.');
+        const contentType = response.headers.get("content-type");
+
+        if (!response.ok || (contentType && !contentType.includes("application/json"))) {
+          alert('세션이 만료되었습니다. 다시 로그인해 주세요.');
           navigate('/member/login');
+          return;
         }
+
+        const data = await response.json();
+        setName(data.name);
+        setEmail(data.email);
+        setPhone(data.phone);
+        setOriginalPhone(data.phone);
       } catch (error) {
         console.error('Error fetching user info:', error);
+        alert('세션이 만료되었거나 서버 통신에 실패했습니다.');
+        navigate('/member/login');
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [navigate]);
 
   const submitEdit = async (event) => {
     event.preventDefault();
+
+    const phoneRegex = /^010-\d{4}-\d{4}$/;
+    if (!phoneRegex.test(phone)) {
+      alert('올바른 전화번호 표현이 아닙니다. (예: 010-1234-5678)');
+      return;
+    }
+
+    if(password !== '' && password.length < 9){
+      alert('변경할 비밀번호는 최소 9자리 이상 입력해 주세요.');
+      return;
+    }
+
+    if (phone === originalPhone && password === '') {
+      alert('변경된 정보가 없습니다.');
+      return;
+    }
 
     const requestData = {
       phone: phone,
@@ -105,11 +128,12 @@ function Edit() {
             </div>
             
             <div className="form-group">
-              <label>전화번호</label>
+              <label>전화번호 (예: 010-1234-5678)</label>
               <input 
                 type="text" 
                 value={phone} 
                 onChange={(e) => setPhone(e.target.value)} 
+                placeholder="010-1234-5678"
                 required 
               />
             </div>

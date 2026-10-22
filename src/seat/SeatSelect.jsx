@@ -375,13 +375,6 @@ function continueCheckout() {
   setConfirmOpen(true);
 }
 
-  }
-
-  setErrorStatus(0);
-  setError("");
-  setCalendarOpen(false);
-  setConfirmOpen(true);
-
 async function confirmCheckout() {
   if (
     checkoutLock.current ||
@@ -425,7 +418,6 @@ async function confirmCheckout() {
     setChecking(false);
   }
 }
-
 
   return (
     <div className={styles.page}>
@@ -693,7 +685,7 @@ async function confirmCheckout() {
       />
     </div>
   );
-
+}
 
 function SeatMap({
   seats,

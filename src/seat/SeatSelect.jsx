@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 import PerformanceCalendar from "./PerformanceCalendar";
 import styles from "./SeatSelect.module.css";
+import { useSearchParams, useNavigate } from "react-router-dom";
+
+import { SeatApiError } from "./seatApi";
+import { loginPath, seatPath } from "./seatFlow";
+import SeatConflictDialog from "./SeatConflictDialog";
 
 const API_BASE_URL = "http://localhost";
 
@@ -92,7 +96,10 @@ async function fetchJson(url, signal) {
   }
 
   if (response.status === 401) {
-    throw new Error("로그인 후 이용해 주세요.");
+    throw new SeatApiError(
+      "로그인 후 이용해 주세요.",
+      401
+    );
   }
 
   if (response.status === 403) {
@@ -181,6 +188,9 @@ function SeatPage({
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [refreshCount, setRefreshCount] = useState(0);
   const [checking, setChecking] = useState(false);
+  const navigate = useNavigate();
+  const [errorStatus, setErrorStatus] = useState(0);
+  const [conflictOpen, setConflictOpen] = useState(false);
 
   const checkoutLock = useRef(false);
 
@@ -189,6 +199,7 @@ function SeatPage({
 
     async function load() {
       setLoading(true);
+      setErrorStatus(0);
       setError("");
       setData(null);
       setSelectedIds([]);
@@ -239,6 +250,7 @@ function SeatPage({
       } catch (loadError) {
         if (controller.signal.aborted) return;
 
+        setErrorStatus(loadError.status ?? 0);
         setError(
           loadError.message || "정보를 불러오지 못했습니다."
         );
@@ -256,6 +268,7 @@ function SeatPage({
   }, [performanceId, refreshCount]);
 
   const seats = data?.seats ?? [];
+  const performanceSeq = data?.info?.performanceSeq;
 
   const selectedSeats = seats.filter((seat) =>
     selectedIds.includes(seat.performanceSeatId)
@@ -300,13 +313,29 @@ function SeatPage({
       return;
     }
 
-    setSelectedIds((previous) =>
-      previous.includes(seat.performanceSeatId)
-        ? previous.filter(
-            (id) => id !== seat.performanceSeatId
-          )
-        : [...previous, seat.performanceSeatId]
+    const alreadySelected = selectedIds.includes(
+      seat.performanceSeatId
     );
+
+    if (!alreadySelected && selectedIds.length >= 5) {
+      setError("한 번에 최대 5매까지 예매할 수 있습니다.");
+      return;
+    }
+
+    setErrorStatus(0);
+    setError("");
+
+    setSelectedIds((previous) => {
+      if (previous.includes(seat.performanceSeatId)) {
+        return previous.filter(
+          (id) => id !== seat.performanceSeatId
+        );
+      }
+
+      return previous.length < 5
+        ? [...previous, seat.performanceSeatId]
+        : previous;
+    });
   }
 
   function refreshSeats() {
@@ -340,20 +369,29 @@ function SeatPage({
     checkoutLock.current = true;
     setChecking(true);
     setCalendarOpen(false);
+    setErrorStatus(0);
     setError("");
 
     try {
-      // 선점과 주문 생성은 부모에서 전달한 함수가 처리
       await onCheckout({
         performanceId,
+        performanceSeq,
         performanceSeatIds: selectedSeats.map(
           (seat) => seat.performanceSeatId
         ),
       });
     } catch (checkoutError) {
+      if (checkoutError.code === "SEAT_ALREADY_SELECTED") {
+        setErrorStatus(0);
+        setError("");
+        setConflictOpen(true);
+        return;
+      }
+
+      setErrorStatus(checkoutError.status ?? 0);
       setError(
         checkoutError.message ||
-          "결제 준비 중 오류가 발생했습니다."
+        "좌석 선점 중 오류가 발생했습니다."
       );
     } finally {
       checkoutLock.current = false;
@@ -363,10 +401,18 @@ function SeatPage({
 
   return (
     <div className={styles.page}>
+      <SeatConflictDialog
+        open={conflictOpen}
+        onConfirm={() => {
+          setConflictOpen(false);
+          refreshSeats();
+        }}
+      />
+
       <header className={styles.header}>
-        <strong className={styles.brand}>
-          <span>H</span>OON HOme
-        </strong>
+          <a href="http://localhost/" className={styles.brand}>
+            SIST TICKET
+          </a>
 
         <span className={styles.headerText}>
           당신의 다음 순간, 무대 위에서
@@ -386,16 +432,23 @@ function SeatPage({
           <div className={styles.error} role="alert">
             <p>{error}</p>
 
-            {!data && (
-              <button
-                type="button"
-                className={styles.secondaryButton}
-                disabled={loading}
-                onClick={refreshSeats}
-              >
-                다시 불러오기
-              </button>
-            )}
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              disabled={loading || checking}
+              onClick={() =>
+                navigate(
+                  errorStatus === 401
+                    ? loginPath(performanceId)
+                    : seatPath(performanceId),
+                  { replace: true }
+                )
+              }
+            >
+              {errorStatus === 401
+                ? "로그인하러 가기"
+                : "좌석 다시 선택"}
+            </button>
           </div>
         )}
 
@@ -422,7 +475,7 @@ function SeatPage({
               </div>
 
               <span className={styles.badge}>
-                회차 #{performanceId}
+                {performanceSeq ?? "-"}회차
               </span>
             </section>
 
@@ -506,7 +559,7 @@ function SeatPage({
                       )}
 
                       <small className={styles.dateSession}>
-                        회차 #{performanceId}
+                        {performanceSeq ?? "-"}회차
                       </small>
                     </span>
 
@@ -702,7 +755,7 @@ function SeatMap({
                             gradeLabel(seat.gradeName),
                             money(seat.price),
                             STATUS_LABELS[seat.status] ??
-                              "선택 불가",
+                            "선택 불가",
                           ].join(", ")}
                           onClick={() => onToggle(seat)}
                         >

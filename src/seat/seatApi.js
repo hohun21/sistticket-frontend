@@ -23,20 +23,25 @@ async function request(url, options = {}) {
   let response;
 
   try {
-    response = await fetch(url, {
-      method,
-      signal,
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
+    response = await fetch(
+      new URL(url, "http://localhost").toString(),
+      {
+        method,
+        signal,
+        credentials: "include",
+
+        headers: {
+          Accept: "application/json",
+          ...(body !== undefined
+            ? { "Content-Type": "application/json" }
+            : {}),
+        },
+
         ...(body !== undefined
-          ? { "Content-Type": "application/json" }
+          ? { body: JSON.stringify(body) }
           : {}),
-      },
-      ...(body !== undefined
-        ? { body: JSON.stringify(body) }
-        : {}),
-    });
+      }
+    );
   } catch (error) {
     if (error.name === "AbortError") {
       throw error;
@@ -154,14 +159,25 @@ export function getSeats(performanceId, signal) {
 }
 
 // 4. 좌석 임시 선점
-export function holdSeats(performanceId, performanceSeatIds) {
-  return request(
-    `${performanceUrl(performanceId)}/holds`,
-    {
-      method: "POST",
-      body: { performanceSeatIds },
+export async function holdSeats(
+  performanceId,
+  performanceSeatIds
+) {
+  try {
+    return await request(
+      `${performanceUrl(performanceId)}/holds`,
+      {
+        method: "POST",
+        body: { performanceSeatIds },
+      }
+    );
+  } catch (error) {
+    if (error.status === 409) {
+      error.code = "SEAT_ALREADY_SELECTED";
     }
-  );
+
+    throw error;
+  }
 }
 
 // 5. 기존 선점 해제

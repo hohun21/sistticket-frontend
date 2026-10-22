@@ -1,5 +1,6 @@
 /* src/pages/MyPage/MyPage.css */
 
+/* --- 전체 기본 바탕 --- */
 .mypage-body {
   background: #11131a;
   color: #f4f4f6;
@@ -118,51 +119,166 @@
   margin-bottom: 30px;
 }
 
-/* 티켓 카드 스타일 */
-.ticket-card {
+/* --- 데이터가 없을 때 (빈 화면) --- */
+.no-data {
+  border: 1px dashed #4a4d5e;
+  border-radius: 12px;
+  padding: 80px 0;
+  text-align: center;
+  color: #999cab;
+  font-size: 15px;
+  margin-top: 20px;
+  background-color: #1b1d26;
+}
+.no-data p {
+  margin: 0;
+}
+
+/* --- 주문 건(Order) 묶음 카드 스타일 --- */
+.order-group-card {
   background: #1b1d26;
-  padding: 24px;
-  border-radius: 16px;
+  border-radius: 12px;
   border: 1px solid #30323d;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.order-header {
+  background: #232633;
+  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #30323d;
 }
-.ticket-info h3 {
+
+.order-header h3 {
   margin: 0 0 8px 0;
-  color: #f4f4f6;
+  color: #ff6b6b;
   font-size: 18px;
 }
-.ticket-info p {
+
+.order-meta {
   margin: 4px 0;
   color: #999cab;
   font-size: 13px;
 }
-.ticket-action {
+
+.order-meta span {
+  margin: 0 8px;
+  color: #4a4d5e;
+}
+
+.order-total-price {
   text-align: right;
+  color: #999cab;
+  font-size: 13px;
 }
-.price {
-  font-size: 16px;
-  font-weight: bold;
+
+.order-total-price strong {
+  display: block;
+  font-size: 20px;
   color: #e8b86d;
-  margin-bottom: 12px;
+  margin-top: 4px;
 }
-.review-btn {
-  background: #e8b86d;
-  color: #11131a;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
+
+/* --- 세부 좌석 리스트 --- */
+.order-details-list {
+  padding: 10px 24px;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px dashed #30323d;
+}
+.ticket-item:last-child {
+  border-bottom: none;
+}
+
+.ticket-seat-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.seat-badge {
+  background: #30323d;
+  color: #999cab;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.seat-name {
+  color: #f4f4f6;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.seat-price {
+  color: #999cab;
+  font-size: 14px;
+}
+
+.status-badge.cancel {
+  color: #ff4d4f;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #ff4d4f;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 티켓 개별 버튼들 */
+.ticket-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.ticket-buttons button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s;
+  border: none;
 }
-.review-btn:hover {
+
+.btn-detail {
+  background: #30323d;
+  color: #f4f4f6;
+}
+.btn-detail:hover {
+  background: #4a4d5e;
+}
+
+.btn-cancel-ticket {
+  background: #ff4d4f;
+  color: #fff;
+}
+.btn-cancel-ticket:hover {
+  background: #ff7875;
+}
+
+.btn-review {
+  background: #e8b86d;
+  color: #11131a;
+}
+.btn-review:hover {
   background: #f5c87d;
 }
 
-/* --- 리뷰 작성 모달 스타일 --- */
+.btn-disabled {
+  background: #30323d;
+  color: #666;
+  cursor: not-allowed !important;
+}
+
+/* --- 모달 공통 및 상세 보기 --- */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -188,6 +304,32 @@
   font-size: 20px;
 }
 
+.detail-modal .detail-info-box {
+  background: #11131a;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #30323d;
+}
+
+.detail-info-box p {
+  margin: 10px 0;
+  color: #f4f4f6;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail-info-box p strong {
+  color: #999cab;
+}
+
+.detail-info-box hr {
+  border: 0;
+  border-top: 1px dashed #30323d;
+  margin: 16px 0;
+}
+
+/* --- 리뷰 작성 모달 스타일 --- */
 .star-rating {
   display: flex;
   gap: 6px;
@@ -256,4 +398,84 @@
 .btn-submit {
   background: #e8b86d;
   color: #11131a;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.page-btn {
+  background: #1b1d26;
+  color: #999cab;
+  border: 1px solid #30323d;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #30323d;
+  color: #f4f4f6;
+}
+
+.page-btn.active {
+  background: #e8b86d;
+  color: #11131a;
+  border-color: #e8b86d;
+}
+
+.page-btn.nav-btn {
+  font-size: 13px;
+  padding: 8px 12px;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #30323d;
+  padding-bottom: 8px;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  color: #999cab;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 4px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.filter-btn:hover {
+  color: #f4f4f6;
+}
+
+.filter-btn.active {
+  color: #e8b86d;
+}
+
+.filter-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #e8b86d;
 }

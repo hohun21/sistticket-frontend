@@ -11,7 +11,7 @@ import {
 } from "../seat/seatApi";
 import {} from "../seat/SeatBooking"
 
-import styles from "../seat/SeatSelect.module.css";
+import styles from "./PaymentCheckout.module.css";
 
 import {
   rememberHold,
@@ -254,6 +254,68 @@ export default function PaymentCheckout() {
     }
   }
 
+  async function processPayment(action) {
+    if (!order?.paymentId || requestLock.current || busy) {
+      return;
+    }
+
+    requestLock.current = true;
+    setBusy(true);
+    setError("");
+    setErrorStatus(0);
+
+    try {
+      let result;
+
+      if (action === "SUCCESS") {
+        result = await completePayment(order.paymentId);
+      } else if (action === "FAIL") {
+        result = await failPayment(order.paymentId);
+      } else if (action === "RETRY") {
+        result = await retryPayment(order.paymentId);
+      } else {
+        return;
+      }
+
+      if (!result?.paymentId || !result?.status) {
+        throw new SeatApiError(
+          "결제 응답을 확인하지 못했습니다.",
+          0,
+          true
+        );
+      }
+
+      if (action === "RETRY") {
+        navigate("/payment/checkout", {
+          replace: true,
+          state: {
+            ...booking,
+            payment: result,
+          },
+        });
+      } else {
+        navigate("/payment/result", {
+          replace: true,
+          state: {
+            booking,
+            order,
+            payment: result,
+            scenario: action,
+          },
+        });
+      }
+    } catch (paymentError) {
+      setErrorStatus(paymentError.status ?? 0);
+      setError(
+        paymentError.message ||
+          "결제 처리에 실패했습니다. 상태를 확인한 후 다시 시도해 주세요."
+      );
+    } finally {
+      requestLock.current = false;
+      setBusy(false);
+    }
+  }
+
   if (!validBooking) {
     return (
       <main className={styles.page}>
@@ -298,7 +360,6 @@ export default function PaymentCheckout() {
                 {Number(order.totalAmount).toLocaleString("ko-KR")}원
               </strong>
             </div>
-
             <label htmlFor="payment-scenario">결제 시나리오</label>
             <select
               id="payment-scenario"

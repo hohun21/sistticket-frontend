@@ -12,36 +12,25 @@ export class SeatApiError extends Error {
 }
 
 async function request(url, options = {}) {
-  const {
-    method = "GET",
-    body,
-    signal,
-  } = options;
+  const { method = "GET", body, signal } = options;
 
   const isMutation = method !== "GET";
 
   let response;
 
   try {
-    response = await fetch(
-      new URL(url, "http://localhost").toString(),
-      {
-        method,
-        signal,
-        credentials: "include",
+    response = await fetch(new URL(url, "http://localhost").toString(), {
+      method,
+      signal,
+      credentials: "include",
 
-        headers: {
-          Accept: "application/json",
-          ...(body !== undefined
-            ? { "Content-Type": "application/json" }
-            : {}),
-        },
+      headers: {
+        Accept: "application/json",
+        ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+      },
 
-        ...(body !== undefined
-          ? { body: JSON.stringify(body) }
-          : {}),
-      }
-    );
+      ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+    });
   } catch (error) {
     if (error.name === "AbortError") {
       throw error;
@@ -52,7 +41,7 @@ async function request(url, options = {}) {
         ? "처리 결과를 확인하지 못했습니다. 좌석이나 주문 상태를 확인해 주세요."
         : "서버에 연결하지 못했습니다.",
       0,
-      isMutation
+      isMutation,
     );
   }
 
@@ -62,15 +51,12 @@ async function request(url, options = {}) {
     throw new SeatApiError(
       "로그인 상태를 확인한 뒤 다시 이용해 주세요.",
       response.status,
-      isMutation
+      isMutation,
     );
   }
 
   if (response.status === 401) {
-    throw new SeatApiError(
-      "로그인 후 이용해 주세요.",
-      401
-    );
+    throw new SeatApiError("로그인 후 이용해 주세요.", 401);
   }
 
   // 선점 취소 성공: 응답 본문 없음
@@ -78,8 +64,7 @@ async function request(url, options = {}) {
     return null;
   }
 
-  const contentType =
-    response.headers.get("content-type") || "";
+  const contentType = response.headers.get("content-type") || "";
 
   let data = null;
 
@@ -90,7 +75,7 @@ async function request(url, options = {}) {
       throw new SeatApiError(
         "서버 응답을 확인하지 못했습니다.",
         response.status,
-        isMutation
+        isMutation,
       );
     }
   }
@@ -115,7 +100,7 @@ async function request(url, options = {}) {
     throw new SeatApiError(
       message,
       response.status,
-      isMutation && response.status >= 500
+      isMutation && response.status >= 500,
     );
   }
 
@@ -123,7 +108,7 @@ async function request(url, options = {}) {
     throw new SeatApiError(
       "서버 응답 형식이 올바르지 않습니다.",
       response.status,
-      isMutation
+      isMutation,
     );
   }
 
@@ -136,41 +121,26 @@ function performanceUrl(performanceId) {
 
 // 1. 선택한 회차의 공연 정보
 export function getPerformanceInfo(performanceId, signal) {
-  return request(
-    `${performanceUrl(performanceId)}/seat-info`,
-    { signal }
-  );
+  return request(`${performanceUrl(performanceId)}/seat-info`, { signal });
 }
 
 // 2. 같은 공연의 전체 회차 목록
 export function getSchedules(performanceId, signal) {
-  return request(
-    `${performanceUrl(performanceId)}/seat-schedules`,
-    { signal }
-  );
+  return request(`${performanceUrl(performanceId)}/seat-schedules`, { signal });
 }
 
 // 3. 선택한 회차의 좌석 목록
 export function getSeats(performanceId, signal) {
-  return request(
-    `${performanceUrl(performanceId)}/seats`,
-    { signal }
-  );
+  return request(`${performanceUrl(performanceId)}/seats`, { signal });
 }
 
 // 4. 좌석 임시 선점
-export async function holdSeats(
-  performanceId,
-  performanceSeatIds
-) {
+export async function holdSeats(performanceId, performanceSeatIds) {
   try {
-    return await request(
-      `${performanceUrl(performanceId)}/holds`,
-      {
-        method: "POST",
-        body: { performanceSeatIds },
-      }
-    );
+    return await request(`${performanceUrl(performanceId)}/holds`, {
+      method: "POST",
+      body: { performanceSeatIds },
+    });
   } catch (error) {
     if (error.status === 409) {
       error.code = "SEAT_ALREADY_SELECTED";
@@ -183,13 +153,10 @@ export async function holdSeats(
 // 5. 기존 선점 해제
 // 별도 취소 버튼 대신, 회차나 좌석을 변경할 때 내부적으로 사용
 export function cancelHold(performanceId, holdToken) {
-  return request(
-    `${performanceUrl(performanceId)}/holds/cancel`,
-    {
-      method: "POST",
-      body: { holdToken },
-    }
-  );
+  return request(`${performanceUrl(performanceId)}/holds/cancel`, {
+    method: "POST",
+    body: { holdToken },
+  });
 }
 
 // 6. 선점한 좌석으로 주문 생성
@@ -200,10 +167,7 @@ export function createOrder({
   paymentMethod,
 }) {
   if (!paymentMethod?.trim()) {
-    throw new SeatApiError(
-      "결제 수단을 선택해 주세요.",
-      400
-    );
+    throw new SeatApiError("결제 수단을 선택해 주세요.", 400);
   }
 
   return request("/api/orders", {
@@ -219,33 +183,24 @@ export function createOrder({
 
 /* 7. 결제 성공 처리 - 발표용 모의 결제 */
 export function completePayment(paymentId) {
-  return request(
-    `/api/payments/${encodeURIComponent(paymentId)}/complete`,
-    {
-      method: "POST",
-      body: {
-        paymentKey: `DEMO-${paymentId}-${Date.now()}`,
-      },
-    }
-  );
+  return request(`/api/payments/${encodeURIComponent(paymentId)}/complete`, {
+    method: "POST",
+    body: {
+      paymentKey: `DEMO-${paymentId}-${Date.now()}`,
+    },
+  });
 }
 
 /* 8. 결제 실패 처리 - 발표용 시나리오 */
 export function failPayment(paymentId) {
-  return request(
-    `/api/payments/${encodeURIComponent(paymentId)}/fail`,
-    {
-      method: "POST",
-    }
-  );
+  return request(`/api/payments/${encodeURIComponent(paymentId)}/fail`, {
+    method: "POST",
+  });
 }
 
 /* 9. 실패한 결제 재시도 */
 export function retryPayment(paymentId) {
-  return request(
-    `/api/payments/${encodeURIComponent(paymentId)}/retry`,
-    {
-      method: "POST",
-    }
-  );
+  return request(`/api/payments/${encodeURIComponent(paymentId)}/retry`, {
+    method: "POST",
+  });
 }

@@ -195,7 +195,6 @@ const [conflictOpen, setConflictOpen] = useState(false);
 const checkoutLock = useRef(false);
 const [confirmOpen, setConfirmOpen] = useState(false);
 
-
   useEffect(() => {
     const controller = new AbortController();
 
@@ -426,6 +425,21 @@ async function confirmCheckout() {
         onConfirm={() => {
           setConflictOpen(false);
           refreshSeats();
+        }}
+      />
+
+      <BookingConfirmModal
+        isOpen={confirmOpen}
+        selectedSeats={selectedSeats.map((seat) => ({
+          id: seat.performanceSeatId,
+          seatName: `${rowLabel(seat)}열 ${seat.seatNumber}번`,
+          gradeName: gradeLabel(seat.gradeName),
+          price: seat.price,
+        }))}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={() => {
+          setConfirmOpen(false);
+          continueCheckout();
         }}
       />
 
@@ -662,7 +676,7 @@ async function confirmCheckout() {
                       selectedSeats.length === 0 ||
                       typeof onCheckout !== "function"
                     }
-                    onClick={continueCheckout}
+                    onClick={() => setConfirmOpen(true)}
                   >
                     {checking ? "처리 중..." : "결제하기"}
                   </button>

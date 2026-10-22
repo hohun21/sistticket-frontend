@@ -2,48 +2,56 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 1100;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgb(0 0 0 / 55%);
+  background: rgba(3, 5, 14, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .modal {
   box-sizing: border-box;
   width: 100%;
-  max-width: 460px;
+  max-width: 480px;
   max-height: 85vh;
   overflow-y: auto;
-  padding: 28px;
-  border-radius: 16px;
-  background: #fff;
-  color: #222;
-  box-shadow: 0 12px 40px rgb(0 0 0 / 24%);
+  padding: 30px;
+  border: 1px solid rgba(167, 139, 250, 0.22);
+  border-radius: 20px;
+  background: #131627;
+  color: #f5f5fa;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  line-height: 1.6;
 }
 
 .modal h2 {
-  margin: 0 0 24px;
-  font-size: 21px;
-  font-weight: 700;
+  margin: 0 0 26px;
+  color: #f5f5fa;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
   line-height: 1.4;
 }
 
 .seatInfo {
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
 .seatInfo h3 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
+  color: #c4b5fd;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .seatInfo ul {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -53,28 +61,46 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 13px 14px;
-  border: 1px solid #e9e9ef;
-  border-radius: 8px;
-  background: #f8f8fb;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: #1b2036;
+  color: #f5f5fa;
   font-size: 14px;
 }
 
 .seatInfo li > div {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
+  min-width: 0;
+}
+
+.seatInfo li > div strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .seatInfo li span {
-  color: #777;
+  color: #9ca3b8;
   font-size: 12px;
 }
 
 .seatInfo li > strong {
   flex-shrink: 0;
+  color: #c4b5fd;
   font-size: 14px;
+  font-weight: 700;
+}
+
+.seatInfo > p {
+  margin: 0;
+  padding: 20px 0;
+  color: #9ca3b8;
+  font-size: 14px;
+  text-align: center;
 }
 
 .total {
@@ -83,20 +109,22 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 24px;
-  padding: 18px 0;
-  border-top: 1px solid #e5e5eb;
-  border-bottom: 1px solid #e5e5eb;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .total span {
+  color: #c1c5d6;
   font-size: 15px;
   font-weight: 600;
 }
 
 .total strong {
-  color: #6243cf;
-  font-size: 21px;
-  font-weight: 700;
+  color: #a78bfa;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .actions {
@@ -106,30 +134,47 @@
 }
 
 .actions button {
-  min-height: 44px;
-  padding: 10px 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #fff;
-  color: #333;
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 11px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  font: inherit;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.actions button:first-child {
+  background: #1b2036;
+  color: #c1c5d6;
 }
 
 .actions button:first-child:hover {
-  background: #f4f4f7;
+  background: #262b45;
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .actions button:last-child {
-  border-color: #6243cf;
-  background: #6243cf;
+  border-color: #8b5cf6;
+  background: #8b5cf6;
   color: #fff;
 }
 
 .actions button:last-child:hover:not(:disabled) {
-  background: #5134b8;
+  border-color: #a78bfa;
+  background: #a78bfa;
+  transform: translateY(-1px);
+}
+
+.actions button:focus-visible {
+  outline: 2px solid #c4b5fd;
+  outline-offset: 3px;
 }
 
 .actions button:disabled {
@@ -138,15 +183,33 @@
 }
 
 @media (max-width: 480px) {
+  .overlay {
+    padding: 14px;
+  }
+
   .modal {
-    padding: 22px 18px;
+    padding: 24px 18px;
+    border-radius: 16px;
   }
 
   .modal h2 {
-    font-size: 19px;
+    margin-bottom: 22px;
+    font-size: 20px;
+  }
+
+  .seatInfo li {
+    padding: 12px;
   }
 
   .total strong {
-    font-size: 19px;
+    font-size: 21px;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions button {
+    width: 100%;
   }
 }

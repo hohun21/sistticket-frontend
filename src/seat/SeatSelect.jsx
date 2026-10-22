@@ -4,6 +4,8 @@ import PerformanceCalendar from "./PerformanceCalendar";
 import styles from "./SeatSelect.module.css";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
+import BookingConfirmModal from "./BookingConfirmModal";
+
 import { SeatApiError } from "./seatApi";
 import { loginPath, seatPath } from "./seatFlow";
 import SeatConflictDialog from "./SeatConflictDialog";
@@ -193,6 +195,8 @@ function SeatPage({
   const [conflictOpen, setConflictOpen] = useState(false);
 
   const checkoutLock = useRef(false);
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -406,6 +410,21 @@ function SeatPage({
         onConfirm={() => {
           setConflictOpen(false);
           refreshSeats();
+        }}
+      />
+
+      <BookingConfirmModal
+        isOpen={confirmOpen}
+        selectedSeats={selectedSeats.map((seat) => ({
+          id: seat.performanceSeatId,
+          seatName: `${rowLabel(seat)}열 ${seat.seatNumber}번`,
+          gradeName: gradeLabel(seat.gradeName),
+          price: seat.price,
+        }))}
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={() => {
+          setConfirmOpen(false);
+          continueCheckout();
         }}
       />
 
@@ -642,7 +661,7 @@ function SeatPage({
                       selectedSeats.length === 0 ||
                       typeof onCheckout !== "function"
                     }
-                    onClick={continueCheckout}
+                    onClick={() => setConfirmOpen(true)}
                   >
                     {checking ? "처리 중..." : "결제하기"}
                   </button>

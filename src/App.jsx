@@ -27,6 +27,7 @@ import SeatBooking from "./seat/SeatBooking.jsx";
 
 // 주문 관련 컴포넌트
 import PaymentCheckout from "./payment/PaymentCheckout.jsx";
+import PaymentResult from "./payment/PaymentResult.jsx";
 
 function App() {
     return (
@@ -38,9 +39,10 @@ function App() {
             <Route path="/concert/:concertId" element={<Detail />} />
             <Route path="/seat/select" element={<SeatBooking />} />
 
-            {/* 결제 페이지 (임시) */}
+            {/* 결제 페이지 */}
             <Route path="/payment/checkout" element={<PaymentCheckout />} />
-
+            <Route path="/payment/result" element={<PaymentResult />} />
+            
             {/* 마이페이지 라우트 */}
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/myreviews" element={<MyReviews />} />

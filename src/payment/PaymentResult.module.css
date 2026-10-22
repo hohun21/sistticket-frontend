@@ -1,0 +1,182 @@
+
+.page {
+  min-height: 100vh;
+  padding: 48px 24px 80px;
+  background: #0b0d18;
+  color: #f5f5fa;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.page * {
+  box-sizing: border-box;
+}
+
+.container {
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.container h1 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.35;
+}
+
+.container > p {
+  margin: 0 0 28px;
+  color: #9ca3b8;
+  font-size: 14px;
+}
+
+.sidebar {
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  background: #131627;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h2 {
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.priceRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.priceRow span {
+  flex-shrink: 0;
+  color: #9ca3b8;
+  font-size: 14px;
+}
+
+.priceRow strong {
+  min-width: 0;
+  color: #f5f5fa;
+  font-size: 14px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+  padding: 22px 0 8px;
+}
+
+.total strong:first-child {
+  color: #c1c5d6;
+  font-size: 15px;
+}
+
+.total strong:last-child {
+  color: #c4b5fd;
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 800;
+}
+
+.muted {
+  margin: 18px 0 0;
+  color: #9ca3b8;
+  font-size: 12px;
+}
+
+.payButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.payButton {
+  width: 100%;
+  margin-top: 20px;
+  background: #8b5cf6;
+  color: #fff;
+}
+
+.payButton:hover {
+  background: #a78bfa;
+  transform: translateY(-1px);
+}
+
+.secondaryButton {
+  flex: 1;
+  min-width: 140px;
+  background: #1b2036;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f5f5fa;
+}
+
+.secondaryButton:hover {
+  background: #262b45;
+  border-color: rgba(167, 139, 250, 0.5);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.buttonGroup button {
+  flex: 1;
+  min-width: 140px;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 28px 16px 48px;
+  }
+
+  .sidebar {
+    padding: 20px 16px;
+  }
+
+  .priceRow {
+    gap: 12px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .buttonGroup button {
+    width: 100%;
+  }
+}

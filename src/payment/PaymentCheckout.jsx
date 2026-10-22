@@ -6,10 +6,13 @@ import {
 
 import {
   createOrder,
+  completePayment,
+  failPayment,
+  retryPayment,
   SeatApiError,
 } from "../seat/seatApi";
 
-import styles from "../seat/SeatSelect.module.css";
+import styles from "./PaymentCheckout.module.css";
 
 import {
   rememberHold,
@@ -25,8 +28,10 @@ export default function PaymentCheckout() {
 
   const booking = location.state;
   const order = booking?.order;
+  const payment = booking?.payment;
 
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [scenario, setScenario] = useState("SUCCESS");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [errorStatus, setErrorStatus] = useState(0);
@@ -149,10 +154,11 @@ export default function PaymentCheckout() {
 
       if (
         !createdOrder?.ordersId ||
-        !createdOrder?.orderNo
+        !createdOrder?.orderNo ||
+        !createdOrder?.paymentId
       ) {
         throw new SeatApiError(
-          "주문 생성 결과를 확인하지 못했습니다.",
+          "주문 또는 결제 ID를 확인하지 못했습니다. 서버 응답을 확인해 주세요.",
           0,
           true
         );
@@ -189,6 +195,69 @@ export default function PaymentCheckout() {
 
         setError(requestError.message);
       }
+    } finally {
+      requestLock.current = false;
+      setBusy(false);
+    }
+  }
+
+  
+  async function processPayment(action) {
+    if (!order?.paymentId || requestLock.current || busy) {
+      return;
+    }
+
+    requestLock.current = true;
+    setBusy(true);
+    setError("");
+    setErrorStatus(0);
+
+    try {
+      let result;
+
+      if (action === "SUCCESS") {
+        result = await completePayment(order.paymentId);
+      } else if (action === "FAIL") {
+        result = await failPayment(order.paymentId);
+      } else if (action === "RETRY") {
+        result = await retryPayment(order.paymentId);
+      } else {
+        return;
+      }
+
+      if (!result?.paymentId || !result?.status) {
+        throw new SeatApiError(
+          "결제 응답을 확인하지 못했습니다.",
+          0,
+          true
+        );
+      }
+
+      if (action === "RETRY") {
+        navigate("/payment/checkout", {
+          replace: true,
+          state: {
+            ...booking,
+            payment: result,
+          },
+        });
+      } else {
+        navigate("/payment/result", {
+          replace: true,
+          state: {
+            booking,
+            order,
+            payment: result,
+            scenario: action,
+          },
+        });
+      }
+    } catch (paymentError) {
+      setErrorStatus(paymentError.status ?? 0);
+      setError(
+        paymentError.message ||
+          "결제 처리에 실패했습니다. 상태를 확인한 후 다시 시도해 주세요."
+      );
     } finally {
       requestLock.current = false;
       setBusy(false);
@@ -234,6 +303,63 @@ export default function PaymentCheckout() {
                 원
               </strong>
             </div>
+                  
+  <div className={styles.priceRow}>
+    <span>결제 ID</span>
+    <strong>{order.paymentId}</strong>
+  </div>
+
+  <label htmlFor="payment-scenario">결제 시나리오</label>
+  <select
+    id="payment-scenario"
+    className={styles.dateToggle}
+    style={{ width: "100%", marginBottom: 16 }}
+    value={scenario}
+    disabled={busy || payment?.status === "SUCCESS"}
+    onChange={(event) => setScenario(event.target.value)}
+  >
+    <option value="SUCCESS">결제 성공</option>
+    <option value="FAIL">결제 실패</option>
+  </select>
+
+  {error && (
+    <div className={styles.error} role="alert">
+      <p>{error}</p>
+    </div>
+  )}
+
+  {payment?.status === "FAILED" && (
+    <div className={styles.error} role="status">
+      <p>결제가 실패했습니다. 재시도할 수 있습니다.</p>
+      <button
+        type="button"
+        className={styles.payButton}
+        disabled={busy}
+        onClick={() => processPayment("RETRY")}
+      >
+        결제 재시도
+      </button>
+    </div>
+  )}
+
+  <button
+    type="button"
+    className={styles.payButton}
+    disabled={
+      busy ||
+      payment?.status === "SUCCESS" ||
+      payment?.status === "CANCELLED"
+    }
+    onClick={() => processPayment(scenario)}
+  >
+    {busy
+      ? "처리 중..."
+      : scenario === "SUCCESS"
+        ? "모의 결제 성공"
+        : "모의 결제 실패"}
+  </button>
+
+
           </section>
         </div>
       </main>

@@ -521,3 +521,148 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.venueMap {
+  display: block;
+  width: 100%;
+  height: 360px;
+  margin-top: 18px;
+  border: 0;
+  border-radius: 18px;
+  background: #f3f4f7;
+}
+
+.mapNotice {
+  margin-top: 18px !important;
+  padding: 35px 18px;
+  border-radius: 14px;
+  background: #f5f5f8;
+  color: var(--muted);
+  text-align: center;
+}
+
+.addressRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.addressRow > p {
+  flex: 1 1 220px;
+}
+
+.addressActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.addressActions button,
+.addressActions a {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.copyMessage {
+  margin-top: 6px !important;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.reviewStar,
+.reviewStars {
+  color: #f5ad2d;
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+}
+
+.reviewCard {
+  min-width: 0;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.reviewMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.reviewStars b {
+  margin-left: 5px;
+  color: var(--primary);
+}
+
+.reviewText {
+  margin-top: 14px !important;
+  color: #424657;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reviewImage {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 180px;
+  margin-top: 14px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.reviewDate {
+  display: block;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.reviewError {
+  padding: 20px;
+  border-radius: 12px;
+  background: #faf4f5;
+  color: #ba4057;
+}
+
+.reviewError button {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #ffffff;
+}
+
+@media (max-width: 760px) {
+  .venueMap {
+    height: 300px;
+  }
+
+  .reviewGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -159,14 +159,25 @@ export function getSeats(performanceId, signal) {
 }
 
 // 4. 좌석 임시 선점
-export function holdSeats(performanceId, performanceSeatIds) {
-  return request(
-    `${performanceUrl(performanceId)}/holds`,
-    {
-      method: "POST",
-      body: { performanceSeatIds },
+export async function holdSeats(
+  performanceId,
+  performanceSeatIds
+) {
+  try {
+    return await request(
+      `${performanceUrl(performanceId)}/holds`,
+      {
+        method: "POST",
+        body: { performanceSeatIds },
+      }
+    );
+  } catch (error) {
+    if (error.status === 409) {
+      error.code = "SEAT_ALREADY_SELECTED";
     }
-  );
+
+    throw error;
+  }
 }
 
 // 5. 기존 선점 해제

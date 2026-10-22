@@ -196,7 +196,7 @@ export default function PerformanceCalendar({
                   </strong>
 
                   <small>
-                    회차 #{schedule.performanceId}
+                    {schedule.performanceSeq ?? "-"}회차
                     {isPast ? " · 지난 회차" : ""}
                   </small>
                 </button>

@@ -19,6 +19,8 @@ import FindId from "./member/FindId.jsx";
 import FindPassword from "./member/FindPassword.jsx";
 
 // 공연 관련 컴포넌트
+import List_customer from "./concert/List_customer";
+import Detail from "./concert/Detail.jsx";
 import SeatBooking from "./seat/SeatBooking.jsx";
 
 // 주문 관련 컴포넌트
@@ -29,6 +31,8 @@ function App() {
     return (
         <Routes>
             {/* 좌석 페이지 */}
+            <Route path="/concert/list" element={<List_customer />} />
+            <Route path="/concert/:concertId" element={<Detail />} />
             <Route path="/seat/select" element={<SeatBooking />} />
 
             {/* 결제 페이지 (임시) */}

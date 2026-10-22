@@ -67,6 +67,7 @@ export default function SeatBooking() {
 
   async function handleCheckout({
     performanceId,
+    performanceSeq,
     performanceSeatIds,
   }) {
     if (blocked || requestLock.current) {
@@ -102,6 +103,7 @@ export default function SeatBooking() {
 
       const booking = {
         performanceId,
+        performanceSeq,
         performanceSeatIds,
         holdToken: hold.holdToken,
         holdExpiresAt: hold.holdExpiresAt,

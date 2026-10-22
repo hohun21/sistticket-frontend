@@ -6,6 +6,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { SeatApiError } from "./seatApi";
 import { loginPath, seatPath } from "./seatFlow";
+import SeatConflictDialog from "./SeatConflictDialog";
 
 const API_BASE_URL = "http://localhost";
 
@@ -189,6 +190,7 @@ function SeatPage({
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
   const [errorStatus, setErrorStatus] = useState(0);
+  const [conflictOpen, setConflictOpen] = useState(false);
 
   const checkoutLock = useRef(false);
 
@@ -266,6 +268,7 @@ function SeatPage({
   }, [performanceId, refreshCount]);
 
   const seats = data?.seats ?? [];
+  const performanceSeq = data?.info?.performanceSeq;
 
   const selectedSeats = seats.filter((seat) =>
     selectedIds.includes(seat.performanceSeatId)
@@ -372,11 +375,19 @@ function SeatPage({
     try {
       await onCheckout({
         performanceId,
+        performanceSeq,
         performanceSeatIds: selectedSeats.map(
           (seat) => seat.performanceSeatId
         ),
       });
     } catch (checkoutError) {
+      if (checkoutError.code === "SEAT_ALREADY_SELECTED") {
+        setErrorStatus(0);
+        setError("");
+        setConflictOpen(true);
+        return;
+      }
+
       setErrorStatus(checkoutError.status ?? 0);
       setError(
         checkoutError.message ||
@@ -390,6 +401,14 @@ function SeatPage({
 
   return (
     <div className={styles.page}>
+      <SeatConflictDialog
+        open={conflictOpen}
+        onConfirm={() => {
+          setConflictOpen(false);
+          refreshSeats();
+        }}
+      />
+
       <header className={styles.header}>
         <strong className={styles.brand}>
           <span>H</span>OON HOme
@@ -456,7 +475,7 @@ function SeatPage({
               </div>
 
               <span className={styles.badge}>
-                회차 #{performanceId}
+                {performanceSeq ?? "-"}회차
               </span>
             </section>
 
@@ -540,7 +559,7 @@ function SeatPage({
                       )}
 
                       <small className={styles.dateSession}>
-                        회차 #{performanceId}
+                        {performanceSeq ?? "-"}회차
                       </small>
                     </span>
 

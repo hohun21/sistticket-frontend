@@ -23,20 +23,25 @@ async function request(url, options = {}) {
   let response;
 
   try {
-    response = await fetch(url, {
-      method,
-      signal,
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
+    response = await fetch(
+      new URL(url, "http://localhost").toString(),
+      {
+        method,
+        signal,
+        credentials: "include",
+
+        headers: {
+          Accept: "application/json",
+          ...(body !== undefined
+            ? { "Content-Type": "application/json" }
+            : {}),
+        },
+
         ...(body !== undefined
-          ? { "Content-Type": "application/json" }
+          ? { body: JSON.stringify(body) }
           : {}),
-      },
-      ...(body !== undefined
-        ? { body: JSON.stringify(body) }
-        : {}),
-    });
+      }
+    );
   } catch (error) {
     if (error.name === "AbortError") {
       throw error;

@@ -1,11 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 
+import MainPage from './mainpage/MainPage.jsx';
+
 // 마이페이지 관련 컴포넌트
-import MyPage from './pages/MyPage/MyPage';
-import MyReviews from './pages/MyPage/MyReviews';
-import Verify from './pages/MyPage/Verify';
-import Edit from './pages/MyPage/Edit';
-import Withdraw from './pages/MyPage/Withdraw';
+import MyPage from './pages/MyPage/MyPage.jsx';
+import MyReviews from './pages/MyPage/MyReviews.jsx';
+import Verify from './pages/MyPage/Verify.jsx';
+import Edit from './pages/MyPage/Edit.jsx';
+import Withdraw from './pages/MyPage/Withdraw.jsx';
 
 // 관리자 및 회원(로그인) 관련 컴포넌트
 import AdminLayout from "./admin/AdminLayout";
@@ -25,21 +27,15 @@ import SeatBooking from "./seat/SeatBooking.jsx";
 import PaymentCheckout from "./payment/PaymentCheckout.jsx";
 
 function App() {
-
     return (
         <Routes>
+            <Route path="/" element={<MainPage />} />
+
             {/* 좌석 페이지 */}
             <Route path="/seat/select" element={<SeatBooking />} />
 
             {/* 결제 페이지 (임시) */}
             <Route path="/payment/checkout" element={<PaymentCheckout />} />
-
-            {/*관리자 페이지*/}
-            <Route element={<AdminRoute />}>
-                <Route path="/admin" element={<AdminLayout />}>
-                    <Route index element={<AdminDashboard />} />
-                </Route>
-            </Route>
 
             {/* 마이페이지 라우트 */}
             <Route path="/mypage" element={<MyPage />} />
@@ -48,7 +44,7 @@ function App() {
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/withdraw" element={<Withdraw />} />
 
-            {/* 관리자 페이지 라우트 */}
+            {/* 관리자 페이지 라우트 (중복된 블록 통합) */}
             <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
@@ -80,7 +76,6 @@ function App() {
             </Route>
         </Routes>
     );
-
 }
 
 export default App;

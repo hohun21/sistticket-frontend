@@ -15,19 +15,29 @@ import AdminMembers from "./admin/AdminMembers.jsx";
 import Login from "./member/Login.jsx";
 import Signup from "./member/Signup.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
-import SeatSelect from "./seat/SeatSelect.jsx";
 import FindId from "./member/FindId.jsx";
 import FindPassword from "./member/FindPassword.jsx";
+
+// 공연 관련 컴포넌트
+import SeatBooking from "./seat/SeatBooking.jsx";
+
+// 주문 관련 컴포넌트
+import PaymentCheckout from "./payment/PaymentCheckout.jsx";
 
 function App() {
 
     return (
         <Routes>
-            <Route path="/seat/select" element={<SeatSelect />} />
+            {/* 좌석 페이지 */}
+            <Route path="/seat/select" element={<SeatBooking />} />
+
+            {/* 결제 페이지 (임시) */}
+            <Route path="/payment/checkout" element={<PaymentCheckout />} />
+
             {/*관리자 페이지*/}
-            <Route element={<AdminRoute/>}>
-                <Route path="/admin" element={<AdminLayout/>}>
-                    <Route index element={<AdminDashboard/>}/>
+            <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
                 </Route>
             </Route>
 

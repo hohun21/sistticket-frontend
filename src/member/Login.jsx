@@ -48,6 +48,16 @@ function Login() {
 
             const data = await response.json();
 
+            const returnTo = searchParams.get("returnTo");
+
+            if (
+            returnTo &&
+            /^\/seat\/select(?:\?|$)/.test(returnTo)
+            ) {
+            navigate(returnTo, { replace: true });
+            return;
+            }
+
             if (data.redirectUrl) {
                 // 관리자 React 페이지 또는 일반 회원 Thymeleaf 페이지로 이동
                 window.location.href = data.redirectUrl;

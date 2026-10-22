@@ -23,6 +23,7 @@ import SeatBooking from "./seat/SeatBooking.jsx";
 
 // 주문 관련 컴포넌트
 import PaymentCheckout from "./payment/PaymentCheckout.jsx";
+import PaymentResult from "./payment/PaymentResult.jsx";
 
 function App() {
 
@@ -33,6 +34,9 @@ function App() {
 
             {/* 결제 페이지 (임시) */}
             <Route path="/payment/checkout" element={<PaymentCheckout />} />
+
+            {/* 결제 결과 페이지 */}
+            <Route path="/payment/result" element={<PaymentResult />}/>
 
             {/*관리자 페이지*/}
             <Route element={<AdminRoute />}>

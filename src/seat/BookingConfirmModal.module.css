@@ -1,0 +1,152 @@
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgb(0 0 0 / 55%);
+}
+
+.modal {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 460px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 16px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 24%);
+}
+
+.modal h2 {
+  margin: 0 0 24px;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.seatInfo {
+  margin-bottom: 22px;
+}
+
+.seatInfo h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.seatInfo ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.seatInfo li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid #e9e9ef;
+  border-radius: 8px;
+  background: #f8f8fb;
+  font-size: 14px;
+}
+
+.seatInfo li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.seatInfo li span {
+  color: #777;
+  font-size: 12px;
+}
+
+.seatInfo li > strong {
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 18px 0;
+  border-top: 1px solid #e5e5eb;
+  border-bottom: 1px solid #e5e5eb;
+}
+
+.total span {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.total strong {
+  color: #6243cf;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.actions button {
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.actions button:first-child:hover {
+  background: #f4f4f7;
+}
+
+.actions button:last-child {
+  border-color: #6243cf;
+  background: #6243cf;
+  color: #fff;
+}
+
+.actions button:last-child:hover:not(:disabled) {
+  background: #5134b8;
+}
+
+.actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .modal {
+    padding: 22px 18px;
+  }
+
+  .modal h2 {
+    font-size: 19px;
+  }
+
+  .total strong {
+    font-size: 19px;
+  }
+}

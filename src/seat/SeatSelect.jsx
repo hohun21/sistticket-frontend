@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import BookingConfirmModal from "./BookingConfirmModal";
 import PerformanceCalendar from "./PerformanceCalendar";
 import styles from "./SeatSelect.module.css";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -189,8 +189,8 @@ function SeatPage({
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
   const [errorStatus, setErrorStatus] = useState(0);
-
   const checkoutLock = useRef(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -353,40 +353,58 @@ function SeatPage({
     }
   }
 
-  async function continueCheckout() {
-    if (
-      checkoutLock.current ||
-      loading ||
-      typeof onCheckout !== "function" ||
-      selectedSeats.length === 0
-    ) {
-      return;
-    }
-
-    checkoutLock.current = true;
-    setChecking(true);
-    setCalendarOpen(false);
-    setErrorStatus(0);
-    setError("");
-
-    try {
-      await onCheckout({
-        performanceId,
-        performanceSeatIds: selectedSeats.map(
-          (seat) => seat.performanceSeatId
-        ),
-      });
-    } catch (checkoutError) {
-      setErrorStatus(checkoutError.status ?? 0);
-      setError(
-        checkoutError.message ||
-        "좌석 선점 중 오류가 발생했습니다."
-      );
-    } finally {
-      checkoutLock.current = false;
-      setChecking(false);
-    }
+  function continueCheckout() {
+  if (
+    checkoutLock.current ||
+    loading ||
+    checking ||
+    selectedSeats.length === 0 ||
+    typeof onCheckout !== "function"
+  ) {
+    return;
   }
+
+  setErrorStatus(0);
+  setError("");
+  setCalendarOpen(false);
+  setConfirmOpen(true);
+}
+
+async function confirmCheckout() {
+  if (
+    checkoutLock.current ||
+    loading ||
+    checking ||
+    selectedSeats.length === 0 ||
+    typeof onCheckout !== "function"
+  ) {
+    return;
+  }
+
+  setConfirmOpen(false);
+  checkoutLock.current = true;
+  setChecking(true);
+  setErrorStatus(0);
+  setError("");
+
+  try {
+    await onCheckout({
+      performanceId,
+      performanceSeatIds: selectedSeats.map(
+        (seat) => seat.performanceSeatId
+      ),
+    });
+  } catch (checkoutError) {
+    setErrorStatus(checkoutError.status ?? 0);
+    setError(
+      checkoutError.message ||
+        "좌석 선점 중 오류가 발생했습니다."
+    );
+  } finally {
+    checkoutLock.current = false;
+    setChecking(false);
+  }
+}
 
   return (
     <div className={styles.page}>
@@ -633,6 +651,17 @@ function SeatPage({
           </>
         )}
       </main>
+            <BookingConfirmModal
+        isOpen={confirmOpen}
+        selectedSeats={selectedSeats.map((seat) => ({
+          id: seat.performanceSeatId,
+          seatName: `${rowLabel(seat)}열 ${seat.seatNumber}번`,
+          gradeName: gradeLabel(seat.gradeName),
+          price: seat.price,
+        }))}
+        onConfirm={confirmCheckout}
+        onClose={() => setConfirmOpen(false)}
+      />
     </div>
   );
 }

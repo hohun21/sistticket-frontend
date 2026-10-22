@@ -205,3 +205,36 @@ export function createOrder({
     },
   });
 }
+
+/* 7. 결제 성공 처리 - 발표용 모의 결제 */
+export function completePayment(paymentId) {
+  return request(
+    `/api/payments/${encodeURIComponent(paymentId)}/complete`,
+    {
+      method: "POST",
+      body: {
+        paymentKey: `DEMO-${paymentId}-${Date.now()}`,
+      },
+    }
+  );
+}
+
+/* 8. 결제 실패 처리 - 발표용 시나리오 */
+export function failPayment(paymentId) {
+  return request(
+    `/api/payments/${encodeURIComponent(paymentId)}/fail`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+/* 9. 실패한 결제 재시도 */
+export function retryPayment(paymentId) {
+  return request(
+    `/api/payments/${encodeURIComponent(paymentId)}/retry`,
+    {
+      method: "POST",
+    }
+  );
+}

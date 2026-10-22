@@ -1,0 +1,11 @@
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.buttonGroup button {
+  flex: 1;
+  min-width: 140px;
+}

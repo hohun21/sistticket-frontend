@@ -1,0 +1,109 @@
+/* SettingsMain.css */
+
+.settings-main-wrapper {
+    /*background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);*/
+    width: 100%;
+    padding: 1rem 1rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* 상단 타이틀 마진도 줄여서 위쪽 공백 압축 */
+.settings-main-wrapper .mb-4 {
+    margin-bottom: 1rem !important;
+}
+
+/* 가로 한 줄 정렬 컨테이너 */
+.settings-card-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 16px;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.settings-card-col {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+/* 컴팩트한 카드 디자인 */
+.dashboard-card {
+    background: #ffffff !important;
+    border: none !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+.dashboard-card .card-body {
+    padding: 1.5rem 1.2rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* 아담해진 아이콘 박스 */
+.icon-circle-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-card:hover .icon-circle-box {
+    transform: scale(1.08);
+}
+
+.icon-circle-box.primary-bg { background: rgba(13, 110, 253, 0.08); color: #0d6efd; }
+.icon-circle-box.success-bg { background: rgba(25, 135, 84, 0.08); color: #198754; }
+.icon-circle-box.warning-bg { background: rgba(255, 193, 7, 0.12); color: #e0a800; }
+
+/* 폰트 및 여백 축소 */
+.dashboard-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 6px;
+}
+
+.dashboard-card .card-text {
+    color: #6c757d;
+    font-size: 0.83rem;
+    line-height: 1.4;
+    margin-bottom: 1.2rem !important;
+}
+
+/* 슬림해진 버튼 */
+.dashboard-card .btn {
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
+    letter-spacing: -0.3px;
+    transition: all 0.2s ease-in-out;
+}
+
+.dashboard-card .btn:hover {
+    transform: translateY(-2px);
+}

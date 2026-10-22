@@ -19,6 +19,7 @@ import SeatSelect from "./seat/SeatSelect.jsx";
 import FindId from "./member/FindId.jsx";
 import FindPassword from "./member/FindPassword.jsx";
 
+import SettingsMain from "./admin/settings/SettingsMain.jsx";
 function App() {
 
     return (
@@ -43,8 +44,10 @@ function App() {
                 <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
                     <Route
-                        path="concerts"
-                        element={<AdminPlaceholderPage menuId="concerts" />}
+                        //path="concerts"
+                        // element={<AdminPlaceholderPage menuId="concerts" />}
+                        path="settings/main"
+                         element={<SettingsMain menuId="concerts" />}
                     />
                     <Route
                         path="reservations"

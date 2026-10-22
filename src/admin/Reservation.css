@@ -1,0 +1,217 @@
+
+.reservation-page {
+    width: 100%;
+    color: #20243a;
+}
+
+.reservation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.reservation-header h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.reservation-header p {
+    margin: 0;
+    color: #858ba3;
+    font-size: 14px;
+}
+
+.reservation-count {
+    color: #666d85;
+    font-size: 14px;
+}
+
+.reservation-list {
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid #e9eaf1;
+}
+
+.reservation-item {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1.1fr 0.8fr 0.7fr;
+    align-items: center;
+    gap: 20px;
+    min-height: 80px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e9eaf1;
+    transition: background-color 0.2s ease;
+}
+
+.reservation-item:hover {
+    background-color: #fafaff;
+}
+
+.reservation-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.reservation-avatar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+    background-color: #f0edff;
+    color: #7764ed;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.reservation-member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.reservation-member-name {
+    overflow: hidden;
+    color: #272b40;
+    font-size: 13px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reservation-number {
+    color: #9299b4;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.reservation-concert {
+    overflow: hidden;
+    color: #515875;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reservation-date {
+    color: #737a94;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.reservation-price {
+    color: #252a42;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+
+
+@media (max-width: 900px) {
+    .reservation-item {
+        grid-template-columns: 1.3fr 1fr 0.8fr;
+        gap: 12px;
+    }
+
+    .reservation-date {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .reservation-item {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 14px 10px;
+    }
+
+    .reservation-concert {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .reservation-price {
+        grid-column: 2;
+        grid-row: 1;
+        text-align: right;
+    }
+
+
+
+    .reservation-header h2 {
+        font-size: 20px;
+    }
+}
+
+/* 예매 항목 클릭 효과 */
+.reservation-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.reservation-item:hover {
+    background-color: #f8fafc;
+}
+
+.reservation-item:focus-visible {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+}
+
+.reservation-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reservation-detail-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.3fr 1fr 1fr;
+    align-items: center;
+    gap: 16px;
+
+    padding: 18px 22px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.reservation-detail-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.reservation-detail-cell > span:first-child {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.reservation-detail-cell > strong {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+/* 좁은 화면에서는 가로 스크롤 */
+@media (max-width: 650px) {
+    .reservation-detail-card {
+        min-width: 600px;
+    }
+
+    .reservation-detail-list {
+        overflow-x: auto;
+    }
+}

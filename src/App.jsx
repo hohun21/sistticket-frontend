@@ -8,6 +8,7 @@ import Signup from "./member/Signup.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
 import FindId from "./member/FindId.jsx";
 import FindPassword from "./member/FindPassword.jsx";
+import Reservation from "./admin/Reservation.jsx";
 
 function App() {
     return (
@@ -22,7 +23,7 @@ function App() {
                     />
                     <Route
                         path="reservations"
-                        element={<AdminPlaceholderPage menuId="reservations"/>}
+                        element={<Reservation menuId="reservations"/>}
                     />
                     <Route
                         path="members"

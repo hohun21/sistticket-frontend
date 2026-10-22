@@ -144,8 +144,8 @@ function MyReviews() {
  return (
     <div className="mypage-body">
       <header className="mypage-header">
-        <a href="http://localhost:80/" className="header-logo">SistTicket</a>
-        <a href="http://localhost:80/" className="header-home-btn">메인으로 돌아가기</a>
+        <Link to="/" className="header-logo">SistTicket</Link>
+        <Link to="/" className="header-home-btn">메인으로 돌아가기</Link>
       </header>
 
       <div className="mypage-wrapper">

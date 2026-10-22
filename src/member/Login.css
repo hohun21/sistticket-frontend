@@ -422,3 +422,89 @@
 .find-id-login-button:hover {
     background: var(--login-primary-hover);
 }
+/* 이메일 입력창과 중복확인 버튼을 한 줄로 배치 */
+.login-form-group .login-email-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 이메일 입력창 */
+.login-form-group .login-email-row .login-email-input {
+    display: block;
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    height: 48px;
+    margin: 0 !important;
+    padding: 0 14px;
+    box-sizing: border-box;
+
+    border: 1px solid #343a52;
+    border-radius: 9px;
+    background-color: #0e1120;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.login-form-group .login-email-row .login-email-input::placeholder {
+    color: #858ba4;
+}
+
+.login-form-group .login-email-row .login-email-input:focus {
+    border-color: #7775ff;
+    box-shadow: 0 0 0 3px rgba(119, 117, 255, 0.15);
+}
+
+/* 중복확인 버튼 */
+.login-form-group .login-email-row .email-check-button {
+    display: inline-flex !important;
+    flex: 0 0 100px !important;
+    align-items: center;
+    justify-content: center;
+
+    height: 48px;
+    margin: 0 !important;
+    padding: 0 10px;
+    box-sizing: border-box;
+
+    border: 1px solid #7775ff !important;
+    border-radius: 9px !important;
+    background: #7775ff !important;
+    color: #ffffff !important;
+
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.login-form-group .login-email-row .email-check-button:hover:not(:disabled) {
+    background: #625ff0 !important;
+    border-color: #625ff0 !important;
+}
+
+.login-form-group .login-email-row .email-check-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 중복확인 결과 메시지 */
+.login-form-group .email-check-message {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.login-form-group .email-check-message.success {
+    color: #4ade80;
+}
+
+.login-form-group .email-check-message.error {
+    color: #f87171;
+}

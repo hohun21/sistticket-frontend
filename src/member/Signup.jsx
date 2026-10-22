@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css"; // 기존 로그인 CSS 파일 경로
+import "./Login.css";
+import "./SignupEmail.css";
 
 function Signup() {
     const navigate = useNavigate();
@@ -17,6 +18,8 @@ function Signup() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [emailCheckLoading, setEmailCheckLoading] = useState(false);
+    const [emailCheckResult, setEmailCheckResult] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,6 +35,10 @@ function Signup() {
             ...prev,
             [name]: nextValue,
         }));
+
+        if(name==="email"){
+            setEmailCheckResult(null);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -49,8 +56,8 @@ function Signup() {
             phoneLast,
         } = formData;
 
-        if (formData.password.length < 8) {
-            setError("비밀번호는 8자 이상 입력해주세요.");
+        if (formData.password.length < 9) {
+            setError("비밀번호는 9자 이상 입력해주세요.");
             return;
         }
 
@@ -114,6 +121,73 @@ function Signup() {
         }
     };
 
+    const checkEmailDuplicate = async() => {
+        const email = formData.email.trim();
+
+        if(!email) {
+            setEmailCheckResult({
+                type:"error",
+                message: "이메일을 입력해주세요.",
+            });
+            return;
+        }
+        // 이메일 형식 검사
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailPattern.test(email)) {
+            setEmailCheckResult({
+                type:"error",
+                message: "올바른 이메일 형식을 입력해주세요.",
+            });
+            return;
+        }
+        try{
+            setEmailCheckLoading(true);
+            setEmailCheckResult(null);
+            const response = await fetch(
+                `http://localhost/api/member/check-email?email=${encodeURIComponent(email)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                    },
+                    credentials: "include",
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`이메일 중복확인 실패 (${response.status})`);
+            }
+
+            const data = await response.json();
+
+            // 서버 응답: { "available": true } 또는 { "available": false }
+            if (typeof data.available !== "boolean") {
+                throw new Error("서버 응답 형식이 올바르지 않습니다.");
+            }
+
+            setEmailCheckResult(
+                data.available
+                    ? {
+                        type: "success",
+                        message: "사용 가능한 이메일입니다.",
+                    }
+                    : {
+                        type: "error",
+                        message: "이미 사용 중인 이메일입니다.",
+                    }
+            );
+        } catch (err) {
+            console.error("이메일 중복확인 오류:", err);
+
+            setEmailCheckResult({
+                type: "error",
+                message: err.message || "중복확인 중 오류가 발생했습니다.",
+            });
+        } finally {
+            setEmailCheckLoading(false);
+        }
+    };
+
     return (
         <div className="login-container">
             {/* 로고 */}
@@ -138,16 +212,38 @@ function Signup() {
                     {/* 이메일 */}
                     <div className="login-form-group">
                         <label htmlFor="email">이메일</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="example@email.com"
-                            autoComplete="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                        />
+
+                        <div className="login-email-row">
+                            <input
+                                className="login-email-input"
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="example@email.com"
+                                autoComplete="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <button
+                                type="button"
+                                className="email-check-button"
+                                onClick={checkEmailDuplicate}
+                                disabled={emailCheckLoading}
+                            >
+                                {emailCheckLoading ? "확인 중..." : "중복확인"}
+                            </button>
+                        </div>
+
+                        {emailCheckResult && (
+                            <p
+                                className={`email-check-message ${emailCheckResult.type}`}
+                                role="status"
+                            >
+                                {emailCheckResult.message}
+                            </p>
+                        )}
                     </div>
 
                     {/* 비밀번호 */}
@@ -157,17 +253,17 @@ function Signup() {
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="8자 이상 입력해주세요."
+                            placeholder="9자 이상 입력해주세요."
                             autoComplete="new-password"
-                            minLength={8}
+                            minLength={9}
                             value={formData.password}
                             onChange={handleChange}
                             required
                         />
                         {formData.password.length > 0 &&
-                            formData.password.length < 8 && (
+                            formData.password.length < 9 && (
                                 <p className="password-match error">
-                                    비밀번호는 8자 이상 입력해주세요.
+                                    비밀번호는 9자 이상 입력해주세요.
                                     (현재 {formData.password.length}자)
                                 </p>
                             )}

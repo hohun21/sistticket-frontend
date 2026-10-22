@@ -6,6 +6,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { SeatApiError } from "./seatApi";
 import { loginPath, seatPath } from "./seatFlow";
+import SeatConflictDialog from "./SeatConflictDialog";
 
 const API_BASE_URL = "http://localhost";
 
@@ -188,9 +189,12 @@ function SeatPage({
   const [refreshCount, setRefreshCount] = useState(0);
   const [checking, setChecking] = useState(false);
   const navigate = useNavigate();
-  const [errorStatus, setErrorStatus] = useState(0);
-  const checkoutLock = useRef(false);
-  const [confirmOpen, setConfirmOpen] = useState(false);
+
+const [errorStatus, setErrorStatus] = useState(0);
+const [conflictOpen, setConflictOpen] = useState(false);
+const checkoutLock = useRef(false);
+const [confirmOpen, setConfirmOpen] = useState(false);
+
 
   useEffect(() => {
     const controller = new AbortController();
@@ -266,6 +270,7 @@ function SeatPage({
   }, [performanceId, refreshCount]);
 
   const seats = data?.seats ?? [];
+  const performanceSeq = data?.info?.performanceSeq;
 
   const selectedSeats = seats.filter((seat) =>
     selectedIds.includes(seat.performanceSeatId)
@@ -353,7 +358,7 @@ function SeatPage({
     }
   }
 
-  function continueCheckout() {
+function continueCheckout() {
   if (
     checkoutLock.current ||
     loading ||
@@ -369,6 +374,13 @@ function SeatPage({
   setCalendarOpen(false);
   setConfirmOpen(true);
 }
+
+  }
+
+  setErrorStatus(0);
+  setError("");
+  setCalendarOpen(false);
+  setConfirmOpen(true);
 
 async function confirmCheckout() {
   if (
@@ -390,11 +402,19 @@ async function confirmCheckout() {
   try {
     await onCheckout({
       performanceId,
+      performanceSeq,
       performanceSeatIds: selectedSeats.map(
         (seat) => seat.performanceSeatId
       ),
     });
   } catch (checkoutError) {
+    if (checkoutError.code === "SEAT_ALREADY_SELECTED") {
+      setErrorStatus(0);
+      setError("");
+      setConflictOpen(true);
+      return;
+    }
+
     setErrorStatus(checkoutError.status ?? 0);
     setError(
       checkoutError.message ||
@@ -406,8 +426,17 @@ async function confirmCheckout() {
   }
 }
 
+
   return (
     <div className={styles.page}>
+      <SeatConflictDialog
+        open={conflictOpen}
+        onConfirm={() => {
+          setConflictOpen(false);
+          refreshSeats();
+        }}
+      />
+
       <header className={styles.header}>
         <strong className={styles.brand}>
           <span>H</span>OON HOme
@@ -474,7 +503,7 @@ async function confirmCheckout() {
               </div>
 
               <span className={styles.badge}>
-                회차 #{performanceId}
+                {performanceSeq ?? "-"}회차
               </span>
             </section>
 
@@ -558,7 +587,7 @@ async function confirmCheckout() {
                       )}
 
                       <small className={styles.dateSession}>
-                        회차 #{performanceId}
+                        {performanceSeq ?? "-"}회차
                       </small>
                     </span>
 
@@ -664,7 +693,7 @@ async function confirmCheckout() {
       />
     </div>
   );
-}
+
 
 function SeatMap({
   seats,

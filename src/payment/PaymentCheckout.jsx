@@ -80,7 +80,7 @@ export default function PaymentCheckout() {
       setErrorStatus(returnError.status ?? 0);
       setError(
         returnError.message ||
-          "선점을 해제하지 못했습니다. 다시 시도해 주세요."
+        "선점을 해제하지 못했습니다. 다시 시도해 주세요."
       );
     } finally {
       requestLock.current = false;
@@ -371,7 +371,9 @@ export default function PaymentCheckout() {
 
           <div className={styles.priceRow}>
             <span>공연 회차</span>
-            <strong>#{booking.performanceId}</strong>
+            <strong>
+              {booking.performanceSeq ?? "-"}회차
+            </strong>
           </div>
 
           <div className={styles.priceRow}>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styles from "./Detail.module.css";
+import ConcertVenueReviews from "./ConcertVenueReviews";
 
 const API_BASE = "http://localhost";
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
@@ -158,10 +159,10 @@ export default function Detail() {
           initial
             ? monthKey(initial.performanceDate)
             : new Intl.DateTimeFormat("sv-SE", {
-                timeZone: "Asia/Seoul",
-                year: "numeric",
-                month: "2-digit",
-              }).format(new Date())
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "2-digit",
+            }).format(new Date())
         );
       } catch (loadError) {
         if (loadError.name !== "AbortError") {
@@ -301,9 +302,9 @@ export default function Detail() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <Link to="/concert/list" className={styles.brand}>
+        <a href="http://localhost/" className={styles.brand}>
           SIST TICKET
-        </Link>
+        </a>
 
         <Link to="/concert/list">공연 목록</Link>
       </header>
@@ -352,6 +353,7 @@ export default function Detail() {
                 <a href="#concert-info">공연 정보</a>
                 <a href="#concert-cast">회차 · 캐스팅</a>
                 <a href="#concert-venue">장소</a>
+                <a href="#concert-reviews">리뷰</a>
               </nav>
 
               <section id="concert-info" className={styles.section}>
@@ -422,12 +424,12 @@ export default function Detail() {
               </section>
 
               <section id="concert-venue" className={styles.section}>
-                <h2>장소</h2>
-                <strong>{concert.venueName || "공연장 미정"}</strong>
-                <p className={styles.muted}>
-                  {concert.venueAddress || "주소 정보를 확인 중입니다."}
-                </p>
+                {/* 기존 장소 내용 */}
               </section>
+              <ConcertVenueReviews
+                key={concert.concertId}
+                concert={concert}
+              />
             </article>
 
             <aside className={styles.bookingPanel}>
@@ -476,9 +478,8 @@ export default function Detail() {
                       disabled={!hasPerformance}
                       aria-label={`${key}${hasPerformance ? " 공연 정보 보기" : " 공연 없음"}`}
                       aria-pressed={selected}
-                      className={`${styles.day} ${
-                        selected ? styles.selectedDay : ""
-                      }`}
+                      className={`${styles.day} ${selected ? styles.selectedDay : ""
+                        }`}
                       onClick={() => viewDay(key)}
                     >
                       {day}
@@ -510,9 +511,8 @@ export default function Detail() {
                         key={performance.performanceId}
                         type="button"
                         aria-pressed={selected}
-                        className={`${styles.session} ${
-                          selected ? styles.viewedSession : ""
-                        }`}
+                        className={`${styles.session} ${selected ? styles.viewedSession : ""
+                          }`}
                         onClick={() => {
                           setViewedId(performance.performanceId);
                           setBookingError("");
@@ -541,8 +541,8 @@ export default function Detail() {
                         <span className={styles.castPreview}>
                           {performance.casts?.length
                             ? performance.casts
-                                .map((cast) => cast.actorName)
-                                .join(", ")
+                              .map((cast) => cast.actorName)
+                              .join(", ")
                             : "캐스팅 정보 확인 중"}
                         </span>
                       </button>

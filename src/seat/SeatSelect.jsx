@@ -430,9 +430,9 @@ async function confirmCheckout() {
       />
 
       <header className={styles.header}>
-        <strong className={styles.brand}>
-          <span>H</span>OON HOme
-        </strong>
+          <a href="http://localhost/" className={styles.brand}>
+            SIST TICKET
+          </a>
 
         <span className={styles.headerText}>
           당신의 다음 순간, 무대 위에서

@@ -262,9 +262,9 @@ export default function List_customer() {
     <div className={styles.page}>
       <header className={styles.hero}>
         <div className={styles.heroInner}>
-          <Link to="/concert/list" className={styles.brand}>
+          <a href="http://localhost/" className={styles.brand}>
             SIST TICKET
-          </Link>
+          </a>
 
           <div className={styles.heading}>
             <span>CONCERT &amp; MUSICAL</span>

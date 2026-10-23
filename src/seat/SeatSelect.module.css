@@ -482,21 +482,22 @@
 .calendarDay {
   height: 33px;
   padding: 0;
-  border: 1px solid var(--ui-dark-border);
+  border: 1px solid var(--ui-border);
   border-radius: 8px;
-  background: var(--ui-primary);
-  color: var(--ui-white);
+  background: #ffffff;
+  color: var(--ui-text);
   font-size: 12px;
 }
 
-.calendarDay:hover:not(:disabled),
-.calendarDay.activeDay:not(:disabled) {
-  border-color: var(--ui-accent);
-  background: var(--ui-primary-hover);
+.calendarDay:hover:not(:disabled) {
+  border-color: var(--ui-primary);
+  background: #f3f3f7;
 }
 
 .calendarDay.activeDay:not(:disabled) {
-  box-shadow: inset 0 0 0 1px var(--ui-accent);
+  border-color: var(--ui-primary);
+  background: var(--ui-primary);
+  color: #ffffff;
   font-weight: 800;
 }
 
@@ -541,21 +542,19 @@
   font-size: 10px;
 }
 
-.timeButton.activeTime:not(:disabled),
 .timeButton:hover:not(:disabled) {
-  border-color: var(--ui-dark-border);
+  border-color: var(--ui-primary);
+  background: #f3f3f7;
+}
+
+.timeButton.activeTime:not(:disabled) {
+  border-color: var(--ui-primary);
   background: var(--ui-primary);
-  color: var(--ui-white);
+  color: #ffffff;
 }
 
-.timeButton.activeTime:not(:disabled) small,
-.timeButton:hover:not(:disabled) small {
+.timeButton.activeTime:not(:disabled) small {
   color: inherit;
-}
-
-.timeButton.activeTime:hover:not(:disabled) {
-  border-color: var(--ui-accent);
-  background: var(--ui-primary-hover);
 }
 
 .timeButton:disabled {

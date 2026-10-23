@@ -8,6 +8,7 @@ export const adminMenuItems = [
         icon: "↳",
         label: "취소 관리"
     }]},
+
     { id: "members", path: "/admin/members", icon: "♙", label: "회원 관리" },
     { id: "revenue", path: "/admin/revenue", icon: "₩", label: "매출 통계" },
 ];

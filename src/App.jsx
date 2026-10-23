@@ -1,4 +1,4 @@
-import {Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 // 메인페이지
 import MainPage from "./mainpage/MainPage";
@@ -6,9 +6,9 @@ import MainPage from "./mainpage/MainPage";
 // 공연 관련 컴포넌트
 import List_customer from "./concert/List_customer";
 import Detail from "./concert/Detail";
-import SeatBooking from "./seat/SeatBooking.jsx";
 
-// 결제 관련 컴포넌트
+// 좌석 및 결제 관련 컴포넌트
+import SeatBooking from "./seat/SeatBooking.jsx";
 import PaymentCheckout from "./payment/PaymentCheckout.jsx";
 import PaymentResult from "./payment/PaymentResult.jsx";
 
@@ -19,78 +19,89 @@ import Verify from "./pages/MyPage/Verify";
 import Edit from "./pages/MyPage/Edit";
 import Withdraw from "./pages/MyPage/Withdraw";
 
+// 회원 관련 컴포넌트
+import Login from "./member/Login.jsx";
+import Signup from "./member/Signup.jsx";
+import FindId from "./member/FindId.jsx";
+import FindPassword from "./member/FindPassword.jsx";
+
 // 관리자 관련 컴포넌트
 import AdminLayout from "./admin/AdminLayout";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminPlaceholderPage from "./admin/AdminPlaceholderPage";
 import AdminMembers from "./admin/AdminMembers.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
-
-// 회원 관련 컴포넌트
-import Login from "./member/Login.jsx";
-import Signup from "./member/Signup.jsx";
-import FindId from "./member/FindId.jsx";
-import FindPassword from "./member/FindPassword.jsx";
+import SettingsMain from "./admin/settings/SettingsMain.jsx";
 import Reservation from "./admin/Reservation.jsx";
-
 
 function App() {
     return (
         <Routes>
             {/* 메인페이지 */}
-            <Route path="/" element={<MainPage/>}/>
+            <Route path="/" element={<MainPage />} />
 
             {/* 공연 */}
-            <Route path="/concert/list" element={<List_customer/>}/>
-            <Route path="/concert/:concertId" element={<Detail/>}/>
+            <Route path="/concert/list" element={<List_customer />} />
+            <Route path="/concert/:concertId" element={<Detail />} />
 
             {/* 좌석 및 예매 */}
-            <Route path="/seat/select" element={<SeatBooking/>}/>
+            <Route path="/seat/select" element={<SeatBooking />} />
 
             {/* 결제 */}
-            <Route path="/payment/checkout" element={<PaymentCheckout/>}/>
-            <Route path="/payment/result" element={<PaymentResult/>}/>
+            <Route path="/payment/checkout" element={<PaymentCheckout />} />
+            <Route path="/payment/result" element={<PaymentResult />} />
 
+            {/* 마이페이지 */}
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/myreviews" element={<MyReviews />} />
+            <Route path="/mypage/verify" element={<Verify />} />
+            <Route path="/mypage/edit" element={<Edit />} />
+            <Route path="/mypage/withdraw" element={<Withdraw />} />
 
-            {/* 관리자 페이지 라우트 (중복된 블록 통합) */}
-            <Route element={<AdminRoute/>}>
-                <Route path="/admin" element={<AdminLayout/>}>
-                    <Route index element={<AdminDashboard/>}/>
+            {/* 관리자 페이지 - 마지막 라우트 블록 */}
+            <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                    {/* 관리자 대시보드 */}
+                    <Route index element={<AdminDashboard />} />
+
+                    {/* 공연 설정 */}
                     <Route
-                        path="concerts"
-                        element={<AdminPlaceholderPage menuId="concerts"/>}
+                        path="settings/main"
+                        element={<SettingsMain menuId="concerts" />}
                     />
+
+                    {/* 예매 관리 */}
                     <Route
                         path="reservations"
-                        element={<Reservation menuId="reservations"/>}
+                        element={<Reservation menuId="reservations" />}
                     />
                     <Route
                         path="reservations/cancellations"
-                        element={<Reservation menuId="cancellations"/>}/>
+                        element={<Reservation menuId="cancellations" />}
+                    />
+
+                    {/* 회원 관리 */}
                     <Route
                         path="members"
-                        element={<AdminMembers menuId="members"/>}
+                        element={<AdminMembers menuId="members" />}
                     />
+
+                    {/* 매출 관리 */}
                     <Route
                         path="revenue"
-                        element={<AdminPlaceholderPage menuId="revenue"/>}
+                        element={<AdminPlaceholderPage menuId="revenue" />}
                     />
                 </Route>
             </Route>
 
-            {/* 마이페이지 */}
-            <Route path="/mypage" element={<MyPage/>}/>
-            <Route path="/mypage/myreviews" element={<MyReviews/>}/>
-            <Route path="/mypage/verify" element={<Verify/>}/>
-            <Route path="/mypage/edit" element={<Edit/>}/>
-            <Route path="/mypage/withdraw" element={<Withdraw/>}/>
-
-
             {/* 로그인 및 회원가입 */}
-            <Route path="/member/login" element={<Login/>}/>
-            <Route path="/member/signup" element={<Signup/>}/>
-            <Route path="/member/find-id" element={<FindId/>}/>
-            <Route path="/member/find-password" element={<FindPassword/>}/>
+            <Route path="/member/login" element={<Login />} />
+            <Route path="/member/signup" element={<Signup />} />
+            <Route path="/member/find-id" element={<FindId />} />
+            <Route
+                path="/member/find-password"
+                element={<FindPassword />}
+            />
         </Routes>
     );
 }

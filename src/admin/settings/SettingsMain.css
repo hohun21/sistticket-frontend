@@ -1,0 +1,170 @@
+/* =========================
+   대시보드 메인 페이지 (SettingsMain)
+========================= */
+
+.settings-main-wrapper {
+    width: 100%;
+    min-width: 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    color: #202938;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-main-wrapper *,
+.settings-main-wrapper *::before,
+.settings-main-wrapper *::after {
+    box-sizing: border-box;
+}
+
+/* 상단 타이틀 영역 */
+.settings-main-wrapper .mb-4 {
+    margin-bottom: 28px !important;
+    text-align: center;
+}
+
+.settings-main-wrapper h2 {
+    margin: 0 0 6px;
+    color: #202938;
+    font-size: 26px;
+    font-weight: 750;
+    letter-spacing: -0.8px;
+}
+
+.settings-main-wrapper p {
+    color: #7b8497;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* 가로 한 줄 정렬 컨테이너 */
+.settings-card-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.settings-card-col {
+    flex: 1;
+    min-width: 250px;
+    max-width: 320px;
+    display: flex;
+}
+
+/* 카드 디자인 */
+.dashboard-card {
+    width: 100%;
+    background: #ffffff !important;
+    border: 1px solid #e8ebf2 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgb(25 35 60 / 3%) !important;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgb(25 35 60 / 6%) !important;
+    border-color: #dcdff0 !important;
+}
+
+/* 카드 바디 (내부 요소들 정중앙 정렬 및 여백 분배) */
+.dashboard-card .card-body {
+    padding: 28px 24px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 💡 가로축 정중앙 */
+    justify-content: space-between; /* 💡 위쪽 내용과 아래쪽 버튼 공간 균등 분배 */
+    height: 100%;
+    text-align: center;
+}
+
+/* 내부 텍스트 래퍼 (내용물 중앙 정렬 유지) */
+.dashboard-card .card-body > div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 아이콘 박스 (보라색 단일 톤) */
+.icon-circle-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    background: #f0eaff; 
+    color: #7456df; 
+    transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover .icon-circle-box {
+    transform: scale(1.05);
+}
+
+/* 카드 타이틀 및 텍스트 */
+.dashboard-card .card-title {
+    font-size: 16px;
+    font-weight: 750;
+    color: #263247;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}
+
+.dashboard-card .card-text {
+    color: #657087;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 24px !important;
+}
+
+/* 버튼 디자인 (칸 안에서 정중앙 및 보라색 단일 톤) */
+.dashboard-card .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* 💡 버튼 내부 텍스트/아이콘 정중앙 */
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #ffffff !important;
+    background: #7456df !important;
+    border: none !important;
+    transition: background-color 0.2s ease;
+    box-shadow: none !important;
+}
+
+.dashboard-card .btn:hover {
+    background: #6243cf !important;
+}
+
+/* 반응형 모바일 대응 */
+@media (max-width: 768px) {
+    .settings-main-wrapper {
+        padding: 20px 16px;
+    }
+    .settings-card-row {
+        flex-direction: column;
+        align-items: center;
+    }
+    .settings-card-col {
+        width: 100%;
+        max-width: 100%;
+    }
+}

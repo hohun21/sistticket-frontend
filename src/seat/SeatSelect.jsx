@@ -444,7 +444,7 @@ async function confirmCheckout() {
       />
 
       <header className={styles.header}>
-          <a href="http://localhost/" className={styles.brand}>
+          <a href="http://localhost:5173/" className={styles.brand}>
             SIST TICKET
           </a>
 

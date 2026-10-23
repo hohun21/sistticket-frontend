@@ -47,7 +47,7 @@ function MainPage() {
         <div className="main-wrapper">
             <header>
                 <h1 className="main">
-                    <Link to="/" style={{ position: 'absolute', top: '30px' }}>HOON HOme</Link>
+                    <Link to="/" style={{ position: 'absolute', top: '30px' }}>SIST TICKET</Link>
                 </h1>
                 
                 <ul>

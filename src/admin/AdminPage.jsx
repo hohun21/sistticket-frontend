@@ -81,8 +81,10 @@ function AdminPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
     const [activeMenu, setActiveMenu] = useState("dashboard");
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
+        console.log("🔥 사용자 정보 useEffect 실행");
         fetch("/api/admin/dashboard", {
             method: "GET",
             credentials: "include",
@@ -104,7 +106,35 @@ function AdminPage() {
                 setLoading(false);
             });
     }, []);
+    // 추가 useEffect: 로그인 사용자 정보 조회
+    function AdminPage() {
+        const [currentUser, setCurrentUser] = useState(null);
 
+        useEffect(() => {
+            console.log("AdminPage 실행됨");
+
+            fetch("/api/admin/me", {
+                method: "GET",
+                credentials: "include",
+            })
+                .then((res) => {
+                    console.log("/api/admin/me 상태:", res.status);
+
+                    if (!res.ok) {
+                        throw new Error(`HTTP ${res.status}`);
+                    }
+
+                    return res.json();
+                })
+                .then((data) => {
+                    console.log("로그인 사용자:", data);
+                    setCurrentUser(data);
+                })
+                .catch((err) => console.error("사용자 조회 오류:", err));
+        }, []);
+
+        // 기존 코드 유지
+    }
     const currentMenu = menuItems.find(
         (item) => item.id === activeMenu
     );
@@ -206,10 +236,23 @@ function AdminPage() {
                             <span />
                             관리자 모드
                         </div>
-                        <div className="admin-avatar">관</div>
+
+                        <div className="admin-avatar">
+                            {currentUser?.name?.charAt(0) ||
+                                currentUser?.email?.charAt(0) ||
+                                "관"}
+                        </div>
+
                         <div className="admin-profile-info">
-                            <strong>관리자</strong>
-                            <span>Administrator</span>
+                            <strong>
+                                {currentUser?.name ||
+                                    currentUser?.email ||
+                                    "불러오는 중..."}
+                            </strong>
+
+                            <span>
+            {currentUser?.email || "Administrator"}
+        </span>
                         </div>
                     </div>
                 </header>

@@ -1,4 +1,4 @@
-
+import { useRef } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { adminMenuItems } from "./adminData";
 import "./AdminSidebar.css";
@@ -6,9 +6,53 @@ import "./AdminSidebar.css";
 function AdminSidebar() {
     const navigate = useNavigate();
     const location = useLocation();
+    const sidebarRef = useRef(null);
+
+    // 사이드바 오른쪽 끝 전체를 드래그해서 너비 조절
+    const handleResizePointerDown = (event) => {
+        if (event.button !== 0) return;
+
+        const sidebar = sidebarRef.current;
+        if (!sidebar) return;
+
+        event.preventDefault();
+
+        const startX = event.clientX;
+        const startWidth = sidebar.getBoundingClientRect().width;
+
+        const previousCursor = document.body.style.cursor;
+        const previousUserSelect = document.body.style.userSelect;
+
+        document.body.style.cursor = "col-resize";
+        document.body.style.userSelect = "none";
+
+        const handlePointerMove = (moveEvent) => {
+            const deltaX = moveEvent.clientX - startX;
+            const newWidth = Math.min(
+                380,
+                Math.max(76, startWidth + deltaX)
+            );
+
+            sidebar.style.width = `${newWidth}px`;
+            sidebar.style.flex = `0 0 ${newWidth}px`;
+        };
+
+        const cleanup = () => {
+            window.removeEventListener("pointermove", handlePointerMove);
+            window.removeEventListener("pointerup", cleanup);
+            window.removeEventListener("pointercancel", cleanup);
+
+            document.body.style.cursor = previousCursor;
+            document.body.style.userSelect = previousUserSelect;
+        };
+
+        window.addEventListener("pointermove", handlePointerMove);
+        window.addEventListener("pointerup", cleanup);
+        window.addEventListener("pointercancel", cleanup);
+    };
 
     return (
-        <aside className="admin-sidebar">
+        <aside className="admin-sidebar" ref={sidebarRef}>
             {/* 로고 */}
             <div className="admin-brand">
                 <div className="admin-brand-symbol">S</div>
@@ -25,10 +69,11 @@ function AdminSidebar() {
                 {adminMenuItems.map((item) => {
                     const hasChildren = item.children?.length > 0;
 
-                    // 예매 관리 페이지를 볼 때만 하위 메뉴 펼치기
-                    const isExpanded = location.pathname === item.path;
+                    const isExpanded =
+                        location.pathname === item.path;
 
-                    const isParentActive = location.pathname === item.path;
+                    const isParentActive =
+                        location.pathname === item.path;
 
                     return (
                         <div
@@ -37,7 +82,6 @@ function AdminSidebar() {
                         >
                             {hasChildren ? (
                                 <>
-                                    {/* 예매 관리 */}
                                     <button
                                         type="button"
                                         className={`admin-nav-item admin-nav-parent ${
@@ -63,7 +107,6 @@ function AdminSidebar() {
                                         </span>
                                     </button>
 
-                                    {/* 현재 예매 관리 페이지에서만 표시 */}
                                     {isExpanded && (
                                         <div className="admin-subnav">
                                             {item.children.map((child) => (
@@ -79,7 +122,6 @@ function AdminSidebar() {
                                                     <span className="admin-subnav-icon">
                                                         {child.icon ?? "↳"}
                                                     </span>
-
                                                     <span>{child.label}</span>
                                                 </NavLink>
                                             ))}
@@ -87,7 +129,6 @@ function AdminSidebar() {
                                     )}
                                 </>
                             ) : item.path.startsWith("http") ? (
-                                /* 외부 페이지 */
                                 <a
                                     href={item.path}
                                     className="admin-nav-item"
@@ -95,11 +136,9 @@ function AdminSidebar() {
                                     <span className="admin-nav-icon">
                                         {item.icon}
                                     </span>
-
                                     <span>{item.label}</span>
                                 </a>
                             ) : (
-                                /* 일반 메뉴 */
                                 <NavLink
                                     to={item.path}
                                     end={item.id === "dashboard"}
@@ -112,7 +151,6 @@ function AdminSidebar() {
                                     <span className="admin-nav-icon">
                                         {item.icon}
                                     </span>
-
                                     <span>{item.label}</span>
                                 </NavLink>
                             )}
@@ -123,11 +161,15 @@ function AdminSidebar() {
 
             {/* 메인 사이트 이동 */}
             <a
-                href="http://localhost:5173/"
+                href="/"
                 className="admin-localhost-button"
+                title="메인 사이트로 이동"
+                aria-label="메인 사이트로 이동"
             >
-                <span>↗</span>
-                메인 사이트로 이동
+                <span className="admin-localhost-icon">↗</span>
+                <span className="admin-localhost-text">
+                    메인 사이트로 이동
+                </span>
             </a>
 
             {/* 하단 관리자 정보 */}
@@ -139,6 +181,15 @@ function AdminSidebar() {
                     <p>SistTicket Management</p>
                 </div>
             </div>
+
+            {/* 사이드바 오른쪽 전체 높이의 크기 조절 핸들 */}
+            <div
+                className="admin-sidebar-resizer"
+                onPointerDown={handleResizePointerDown}
+                role="separator"
+                aria-orientation="vertical"
+                aria-label="사이드바 너비 조절"
+            />
         </aside>
     );
 }

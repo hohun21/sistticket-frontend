@@ -1,11 +1,20 @@
+/* 사이드바 너비를 기준으로 반응형 처리 */
+.admin-sidebar {
+    container-type: inline-size;
+}
+
+/* 메인 사이트 이동 버튼 */
 .admin-localhost-button {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 
+    box-sizing: border-box;
+    width: calc(100% - 32px);
+    min-width: 0;
     margin: auto 16px 24px;
-    padding: 13px 16px;
+    padding: 13px 12px;
 
     color: #ffffff;
     background: #252742;
@@ -15,8 +24,11 @@
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
+    white-space: nowrap;
 
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition:
+            background 0.2s ease,
+            border-color 0.2s ease;
 }
 
 .admin-localhost-button:hover {
@@ -24,8 +36,19 @@
     border-color: #7856e8;
 }
 
-.admin-localhost-button span {
-    font-size: 17px;
+.admin-localhost-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 20px;
+    width: 20px;
+    font-size: 20px;
+}
+
+.admin-localhost-text {
+    display: inline-block;
+    min-width: 0;
+    white-space: nowrap;
 }
 
 /* 부모 메뉴와 하위 메뉴 그룹 */
@@ -116,5 +139,117 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* 사이드바 너비가 150px 이하이면 아이콘만 표시 */
+@container (max-width: 150px) {
+    .admin-localhost-button {
+        width: 44px;
+        min-width: 44px;
+        max-width: 44px;
+        height: 44px;
+        min-height: 44px;
+
+        margin: auto auto 24px;
+        padding: 0;
+        gap: 0;
+
+        overflow: hidden;
+        flex: 0 0 44px;
+    }
+
+    .admin-localhost-text {
+        display: none;
+    }
+
+    .admin-localhost-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 20px;
+        min-width: 20px;
+        margin: 0;
+        font-size: 20px;
+    }
+}
+/* 사이드바 크기를 직접 조절하므로 브라우저 기본 핸들은 사용하지 않음 */
+.admin-sidebar {
+    position: relative;
+    flex-shrink: 0;
+    resize: none;
+    container-type: inline-size;
+}
+
+/* 사이드바 오른쪽 끝 전체를 드래그 영역으로 사용 */
+.admin-sidebar-resizer {
+    position: absolute;
+    top: 0;
+    right: -5px;
+    bottom: 0;
+
+    width: 10px;
+    z-index: 1000;
+
+    cursor: ew-resize;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    background: transparent;
+}
+
+/* 드래그 영역의 가운데 경계선 */
+.admin-sidebar-resizer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4px;
+
+    width: 2px;
+    background: transparent;
+    pointer-events: none;
+
+    transition: background-color 0.15s ease;
+}
+
+.admin-sidebar-resizer:hover::after,
+.admin-sidebar-resizer:active::after {
+    background: #7856e8;
+}
+.admin-sidebar-resizer,
+.admin-sidebar-resizer * {
+    user-select: none;
+    -webkit-user-select: none;
+}
+/* 사이드바 폭이 좁으면 메인 사이트 버튼은 아이콘만 표시 */
+@container (max-width: 150px) {
+    .admin-localhost-button {
+        box-sizing: border-box;
+        width: 44px;
+        min-width: 44px;
+        max-width: 44px;
+        height: 44px;
+
+        margin: auto auto 24px;
+        padding: 0;
+        gap: 0;
+        overflow: hidden;
+        flex: 0 0 44px;
+    }
+
+    .admin-localhost-text {
+        display: none;
+    }
+
+    .admin-localhost-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 20px;
+        min-width: 20px;
+        font-size: 20px;
     }
 }

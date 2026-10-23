@@ -173,13 +173,16 @@
   text-align: right;
   color: #999cab;
   font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 20px;
 }
 
 .order-total-price strong {
-  display: block;
+  display: inline;
   font-size: 20px;
   color: #e8b86d;
-  margin-top: 4px;
+  margin-left: 4px;
 }
 
 /* --- 세부 좌석 리스트 --- */
@@ -233,6 +236,15 @@
   border-radius: 4px;
 }
 
+.status-badge.request {
+  color: #faad14;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #faad14;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
 /* 티켓 개별 버튼들 */
 .ticket-buttons {
   display: flex;
@@ -276,6 +288,11 @@
   background: #30323d;
   color: #666;
   cursor: not-allowed !important;
+}
+
+.btn-request-status {
+  background: #faad14 !important;
+  color: #11131a !important;
 }
 
 /* --- 모달 공통 및 상세 보기 --- */

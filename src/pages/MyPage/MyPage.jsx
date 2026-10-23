@@ -60,7 +60,7 @@ function MyPage() {
   const filteredTickets = tickets.filter(ticket => {
     if (filterStatus === 'ALL') return true;
     if (filterStatus === 'CONFIRMED') return ticket.status === 'CONFIRMED';
-    if (filterStatus === 'CANCELLED') return ticket.status === 'CANCELLED' || ticket.status === 'CANCLEREQUEST';
+    if (filterStatus === 'CANCELLED') return ticket.status === 'CANCELLED' || ticket.status === 'CANCELREQUEST';
     return true;
   });
 
@@ -107,7 +107,7 @@ function MyPage() {
         setTickets((prevTickets) =>
           prevTickets.map((ticket) =>
             ticket.orderDetailId === orderDetailId
-              ? { ...ticket, buttonStatus: 'CANCEL_REQUESTED', status: 'CANCLEREQUEST' } 
+              ? { ...ticket, buttonStatus: 'CANCEL_REQUESTED', status: 'CANCELREQUEST' } 
               : ticket
           )
         );
@@ -247,30 +247,27 @@ function MyPage() {
                           <span className="seat-name">{ticket.seatInfo || '좌석 정보 없음'}</span>
                           <span className="seat-price">{ticket.price.toLocaleString()}원</span>
                           {(ticket.status === 'CANCELLED' || ticket.buttonStatus === 'CANCELED') && <span className="status-badge cancel">취소됨</span>}
-                          {(ticket.status === 'CANCLEREQUEST' || ticket.buttonStatus === 'CANCEL_REQUESTED') && <span className="status-badge request">취소 요청중</span>}
+                          {(ticket.status === 'CANCELREQUEST' || ticket.buttonStatus === 'CANCEL_REQUESTED') && <span className="status-badge request">취소 요청중</span>}
                         </div>
                         
-                        {/* 💡 어떤 상태든 무조건 버튼 영역이 출력되도록 보장하고, status와 buttonStatus를 동시 체크 */}
                         <div className="ticket-buttons">
                           <button className="btn-detail" onClick={() => openDetailModal(ticket)}>상세 보기</button>
                           
-                          {/* 1. 취소 요청중 상태 */}
-                          {(ticket.status === 'CANCLEREQUEST' || ticket.buttonStatus === 'CANCEL_REQUESTED') ? (
+                          {(ticket.status === 'CANCELREQUEST' || ticket.buttonStatus === 'CANCEL_REQUESTED') ? (
                             <button className="btn-disabled btn-request-status" disabled>취소 요청중</button>
-                          ) : /* 2. 취소 완료 상태 */
+                          ) : 
                           (ticket.status === 'CANCELLED' || ticket.buttonStatus === 'CANCELED') ? (
                             <button className="btn-disabled" disabled>취소 완료</button>
-                          ) : /* 3. 리뷰 완료 상태 */
+                          ) : 
                           (ticket.buttonStatus === 'REVIEWED') ? (
                             <button className="btn-disabled" disabled>리뷰 완료</button>
-                          ) : /* 4. 리뷰 작성 가능 상태 */
+                          ) : 
                           (ticket.buttonStatus === 'REVIEWABLE') ? (
                             <button className="btn-review" onClick={() => openReviewModal(ticket.orderDetailId)}>리뷰 쓰기</button>
-                          ) : /* 5. 취소 불가 상태 */
+                          ) : 
                           (ticket.buttonStatus === 'NON_CANCELABLE') ? (
                             <button className="btn-disabled" disabled>취소 불가</button>
                           ) : (
-                            /* 6. 기본값(그 외 일반 예매 완료 상태): 예매 취소 버튼 노출 */
                             <button className="btn-cancel-ticket" onClick={() => handleCancel(ticket.orderDetailId)}>예매 취소</button>
                           )}
                         </div>
@@ -333,7 +330,7 @@ function MyPage() {
               <p><strong>좌석 금액:</strong> {selectedDetail.price.toLocaleString()}원</p>
               <p><strong>현재 상태:</strong> {
                 selectedDetail.status === 'CANCELLED' || selectedDetail.buttonStatus === 'CANCELED' ? <span style={{color:'#ff4d4f'}}>취소 완료</span> : 
-                selectedDetail.status === 'CANCLEREQUEST' || selectedDetail.buttonStatus === 'CANCEL_REQUESTED' ? <span style={{color:'#faad14'}}>취소 요청중</span> : 
+                selectedDetail.status === 'CANCELREQUEST' || selectedDetail.buttonStatus === 'CANCEL_REQUESTED' ? <span style={{color:'#faad14'}}>취소 요청중</span> : 
                 '예매 완료'
               }</p>
             </div>

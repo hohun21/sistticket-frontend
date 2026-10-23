@@ -1,0 +1,66 @@
+.concert-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 9px;
+}
+
+.concert-message {
+    padding: 20px;
+    color: #85899d;
+    font-size: 12px;
+    text-align: center;
+}
+
+.concert-message.error {
+    color: #d65c72;
+}
+.admin-panel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    padding: 7px 11px;
+    color: #7456df;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+
+    background: #f4f0ff;
+    border: 1px solid #e7deff;
+    border-radius: 8px;
+
+    box-shadow: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-panel-button::after {
+    content: "→";
+    font-size: 12px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.admin-panel-button:hover {
+    color: #ffffff;
+    background: #7954e8;
+    border-color: #7954e8;
+    box-shadow: 0 4px 10px rgba(121, 84, 232, 0.25);
+}
+
+.admin-panel-button:hover::after {
+    transform: translateX(2px);
+}
+
+.admin-panel-button:active {
+    background: #6540d0;
+    border-color: #6540d0;
+    box-shadow: none;
+}
+
+.admin-panel-button:focus-visible {
+    outline: 2px solid #c9bbff;
+    outline-offset: 2px;
+}

@@ -123,7 +123,7 @@ function AdminSidebar() {
 
             {/* 메인 사이트 이동 */}
             <a
-                href="http://localhost/"
+                href="http://localhost:5173/"
                 className="admin-localhost-button"
             >
                 <span>↗</span>

@@ -52,6 +52,8 @@ export default function ConcertVenueReviews({ concert }) {
   const [error, setError] = useState("");
   const [reload, setReload] = useState(0);
   const [copyMessage, setCopyMessage] = useState("");
+  
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const concertId = concert.concertId;
   const venueName = concert.venueName || "";
@@ -74,6 +76,21 @@ export default function ConcertVenueReviews({ concert }) {
   const externalMapUrl =
     `https://www.google.com/maps/search/?api=1&query=` +
     encodeURIComponent(locationQuery);
+
+  useEffect(() => {
+    async function checkAdminStatus() {
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/check`, {
+          credentials: "include",
+        });
+        if (response.ok) {
+          setIsAdmin(true);
+        }
+      } catch (e) {
+      }
+    }
+    checkAdminStatus();
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -129,6 +146,30 @@ export default function ConcertVenueReviews({ concert }) {
 
     return () => controller.abort();
   }, [concertId, reload]);
+
+  async function handleDeleteReview(reviewId) {
+    if (!window.confirm("관리자 권한으로 이 리뷰를 정말 삭제하시겠습니까?")) return;
+
+    try {
+      const response = await fetch(`${API_BASE}/api/admin/reviews/${reviewId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        alert('리뷰가 삭제되었습니다.');
+        // 새로고침 없이 화면에서 즉시 삭제 (SPA 최적화)
+        setReviews((prev) => prev.filter((review) => review.reviewId !== reviewId));
+      } else {
+        alert(result.message || '리뷰 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('서버와 통신 중 오류가 발생했습니다.');
+    }
+  }
 
   const ratings = reviews
     .map((review) => ratingValue(review.rating))
@@ -253,6 +294,16 @@ export default function ConcertVenueReviews({ concert }) {
                     )}
 
                     <strong>{review.memberName || "익명"}</strong>
+                    
+                    {isAdmin && (
+                      <button 
+                        type="button" 
+                        onClick={() => handleDeleteReview(review.reviewId)}
+                        style={{ marginLeft: '12px', fontSize: '12px', padding: '2px 8px', color: '#ff4d4f', background: 'transparent', border: '1px solid #ff4d4f', borderRadius: '4px', cursor: 'pointer' }}
+                      >
+                        관리자 삭제
+                      </button>
+                    )}
                   </div>
 
                   <p className={styles.reviewText}>{review.text}</p>

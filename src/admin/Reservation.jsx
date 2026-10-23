@@ -1,10 +1,12 @@
-import {useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./Reservation.css";
 
-function Reservation({menuId = "reservations"}) {
+function Reservation({ menuId = "reservations" }) {
     const isCancellationManagement = menuId === "cancellations";
+
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState("");
 
     // 상세 정보를 펼쳐 볼 예매
@@ -14,42 +16,47 @@ function Reservation({menuId = "reservations"}) {
     const [detailError, setDetailError] = useState("");
     const [cancellationActionLoading, setCancellationActionLoading] = useState(null);
 
-    // 전체 예매 목록 조회
-    useEffect(() => {
-        const fetchReservations = async () => {
-            try {
+    // 전체 예매 목록 조회. 최초 로딩과 재조회 시 화면 동작을 구분한다.
+    const fetchReservations = useCallback(async ({ showLoading = false } = {}) => {
+        try {
+            if (showLoading) {
                 setLoading(true);
-                setError("");
-
-                const response = await fetch(
-                    isCancellationManagement ?
-                        "http://localhost/api/admin/reservation-cancellations"
-                        : "http://localhost/api/admin/reservations",
-                    {
-                        method: "GET",
-                        headers: {
-                            Accept: "application/json",
-                        },
-                        credentials: "include",
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`예매 내역 조회 실패 (${response.status})`);
-                }
-
-                const data = await response.json();
-                setReservations(Array.isArray(data) ? data : data.content ?? []);
-            } catch (err) {
-                console.error("예매 내역 조회 오류:", err);
-                setError(err.message || "예매 내역을 불러오지 못했습니다.");
-            } finally {
-                setLoading(false);
+            } else {
+                setRefreshing(true);
             }
-        };
+            setError("");
 
-        void fetchReservations();
-    }, [menuId]);
+            const response = await fetch(
+                isCancellationManagement
+                    ? "/api/admin/reservation-cancellations"
+                    : "/api/admin/reservations",
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                    },
+                    credentials: "include",
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(`예매 내역 조회 실패 (${response.status})`);
+            }
+
+            const data = await response.json();
+            setReservations(Array.isArray(data) ? data : data?.content ?? []);
+        } catch (err) {
+            console.error("예매 내역 조회 오류:", err);
+            setError(err.message || "예매 내역을 불러오지 못했습니다.");
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    }, [isCancellationManagement]);
+
+    useEffect(() => {
+        void fetchReservations({ showLoading: true });
+    }, [fetchReservations, menuId]);
 
     // 예매 한 건의 상세 조회
     const openReservationDetail = async (reservation) => {
@@ -69,8 +76,8 @@ function Reservation({menuId = "reservations"}) {
         try {
             const response = await fetch(
                 isCancellationManagement
-                    ? `http://localhost/api/admin/reservation-cancellations/${reservationId}`
-                    : `http://localhost/api/admin/reservations/${reservationId}`,
+                    ? `/api/admin/reservation-cancellations/${reservationId}`
+                    : `/api/admin/reservations/${reservationId}`,
                 {
                     method: "GET",
                     headers: {
@@ -161,57 +168,36 @@ function Reservation({menuId = "reservations"}) {
         switch (status) {
             case "CONFIRMED":
                 return "status-completed";
-
             case "PENDING":
                 return "status-pending";
-
             case "CANCELLED":
                 return "status-cancelled";
-
             case "CANCELREQUEST":
                 return "status-cancel-request";
-
             case "EXPIRED":
                 return "status-expired";
-
             default:
                 return "status-pending";
         }
     };
+
     const getStatusLabel = (status) => {
         switch (status) {
             case "PENDING":
                 return "결제 대기";
-
             case "CONFIRMED":
                 return "예매 확정";
-
             case "CANCELLED":
                 return "취소 완료";
-
             case "CANCELREQUEST":
                 return "취소 요청";
-
             case "EXPIRED":
                 return "결제 시간 만료";
-
             default:
                 return "상태 미확인";
         }
     };
 
-    if (loading) {
-        return <div className="reservation-message">예매 내역을 불러오는 중...</div>;
-    }
-
-    if (error) {
-        return (
-            <div className="reservation-message reservation-error">
-                <p>{error}</p>
-                <button onClick={() => window.location.reload()}>다시 시도</button>
-            </div>
-        );
-    }
     const handleCancellationAction = async (detail, action) => {
         const orderDetailId = detail.ordersDetailId;
 
@@ -249,23 +235,9 @@ function Reservation({menuId = "reservations"}) {
 
             alert(`${actionLabel} 처리되었습니다.`);
 
-            // 처리한 좌석은 취소 요청 목록에서 제거
-            const remainingDetails = reservationDetail.filter(
-                (item) => item.orderDetailId !== orderDetailId
-            );
-
-            setReservationDetail(remainingDetails);
-
-            // 해당 주문에 남은 취소 요청 좌석이 없으면 목록에서도 제거
-            if (remainingDetails.length === 0) {
-                const selectedOrderId = selectedReservation?.ordersId;
-
-                setReservations((prev) =>
-                    prev.filter((item) => item.ordersId !== selectedOrderId)
-                );
-
-                closeReservationDetail();
-            }
+            // 상세 패널을 닫고 서버에서 최신 목록을 다시 받아온다.
+            closeReservationDetail();
+            await fetchReservations();
         } catch (err) {
             console.error(`${actionLabel} 오류:`, err);
             alert(err.message || `${actionLabel} 처리 중 오류가 발생했습니다.`);
@@ -273,6 +245,21 @@ function Reservation({menuId = "reservations"}) {
             setCancellationActionLoading(null);
         }
     };
+
+    if (loading) {
+        return <div className="reservation-message">예매 내역을 불러오는 중...</div>;
+    }
+
+    if (error && reservations.length === 0) {
+        return (
+            <div className="reservation-message reservation-error">
+                <p>{error}</p>
+                <button type="button" onClick={() => void fetchReservations({ showLoading: true })}>
+                    다시 시도
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="reservation-page">
@@ -285,8 +272,26 @@ function Reservation({menuId = "reservations"}) {
                             : "전체 회원의 예매 내역을 확인할 수 있습니다."}
                     </p>
                 </div>
-                <span className="reservation-count">총 {reservations.length}건</span>
+                <div className="reservation-header-actions">
+                    <span className="reservation-count">총 {reservations.length}건</span>
+                    <button
+                        type="button"
+                        onClick={() => void fetchReservations()}
+                        disabled={refreshing}
+                    >
+                        {refreshing ? "새로고침 중..." : "목록 새로고침"}
+                    </button>
+                </div>
             </div>
+
+            {error && (
+                <div className="reservation-message reservation-error">
+                    <p>{error}</p>
+                    <button type="button" onClick={() => void fetchReservations()}>
+                        다시 시도
+                    </button>
+                </div>
+            )}
 
             <div className="reservation-list">
                 {reservations.length === 0 ? (
@@ -302,7 +307,6 @@ function Reservation({menuId = "reservations"}) {
 
                         return (
                             <div className="reservation-order-group" key={reservationKey}>
-                                {/* 예매 목록 행 */}
                                 <div
                                     className={`reservation-item${isSelected ? " reservation-item-selected" : ""}`}
                                     onClick={() => toggleReservationDetail(reservation)}
@@ -341,12 +345,9 @@ function Reservation({menuId = "reservations"}) {
                                     </div>
                                 </div>
 
-                                {/* 상세 정보가 선택한 예매 행 바로 아래에서 펼쳐짐 */}
                                 {isSelected && (
                                     <section className="reservation-detail-panel">
-                                        <div className="reservation-detail-header">
-
-                                        </div>
+                                        <div className="reservation-detail-header" />
 
                                         {detailLoading ? (
                                             <div className="reservation-message">
@@ -407,13 +408,12 @@ function Reservation({menuId = "reservations"}) {
 
                                                         <div className="reservation-detail-cell">
                                                             <span>상태</span>
-
                                                             <strong>
-                                                            <span
-                                                                className={`reservation-status ${getStatusClass(detail.status)}`}
-                                                            >
-                                                                {getStatusLabel(detail.status)}
-                                                            </span>
+                                                                <span
+                                                                    className={`reservation-status ${getStatusClass(detail.status)}`}
+                                                                >
+                                                                    {getStatusLabel(detail.status)}
+                                                                </span>
                                                             </strong>
 
                                                             {isCancellationManagement &&
@@ -427,7 +427,7 @@ function Reservation({menuId = "reservations"}) {
                                                                                 handleCancellationAction(detail, "approve")
                                                                             }
                                                                         >
-                                                                            {cancellationActionLoading === detail.orderDetailId
+                                                                            {cancellationActionLoading === detail.ordersDetailId
                                                                                 ? "처리 중..."
                                                                                 : "취소 승인"}
                                                                         </button>
@@ -440,7 +440,9 @@ function Reservation({menuId = "reservations"}) {
                                                                                 handleCancellationAction(detail, "reject")
                                                                             }
                                                                         >
-                                                                            반려
+                                                                            {cancellationActionLoading === detail.ordersDetailId
+                                                                                ? "처리 중..."
+                                                                                : "반려"}
                                                                         </button>
                                                                     </div>
                                                                 )}

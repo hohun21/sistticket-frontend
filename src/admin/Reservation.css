@@ -255,3 +255,71 @@
     opacity: 0.55;
     cursor: not-allowed;
 }
+/* 목록 새로고침 버튼 영역 */
+.reservation-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 목록 새로고침 버튼 */
+.reservation-header-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 14px;
+    border: 1px solid #d0d5dd;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+    color: #344054;
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: all 0.2s ease;
+}
+
+/* 마우스 오버 */
+.reservation-header-actions button:hover:not(:disabled) {
+    background-color: #f0f5ff;
+    border-color: #84adff;
+    color: #175cd3;
+}
+
+/* 클릭 */
+.reservation-header-actions button:active:not(:disabled) {
+    background-color: #e0eaff;
+    transform: translateY(1px);
+}
+
+/* 키보드 포커스 */
+.reservation-header-actions button:focus-visible {
+    outline: 3px solid rgba(47, 111, 237, 0.2);
+    outline-offset: 2px;
+}
+
+/* 새로고침 진행 중 */
+.reservation-header-actions button:disabled {
+    background-color: #f2f4f7;
+    border-color: #e4e7ec;
+    color: #98a2b3;
+    cursor: not-allowed;
+}
+
+/* 모바일 대응 */
+@media (max-width: 480px) {
+    .reservation-header-actions {
+        gap: 6px;
+    }
+
+    .reservation-header-actions button {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}

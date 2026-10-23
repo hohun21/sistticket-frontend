@@ -20,7 +20,8 @@ function Login() {
         formData.append("password", password);
 
         try {
-            const response = await fetch("/api/member/login", {
+            const response = await fetch("" +
+                "http://localhost/api/member/login", {
                 method: "POST",
                 body: formData,
                 credentials: "include",

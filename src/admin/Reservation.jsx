@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import "./Reservation.css";
 
-function Reservation() {
+function Reservation({menuId = "reservations"}) {
+    const isCancellationManagement = menuId === "cancellations";
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -11,6 +12,7 @@ function Reservation() {
     const [reservationDetail, setReservationDetail] = useState([]);
     const [detailLoading, setDetailLoading] = useState(false);
     const [detailError, setDetailError] = useState("");
+    const [cancellationActionLoading, setCancellationActionLoading] = useState(null);
 
     // 전체 예매 목록 조회
     useEffect(() => {
@@ -20,7 +22,9 @@ function Reservation() {
                 setError("");
 
                 const response = await fetch(
-                    "http://localhost/api/admin/reservations",
+                    isCancellationManagement ?
+                        "http://localhost/api/admin/reservation-cancellations"
+                        : "http://localhost/api/admin/reservations",
                     {
                         method: "GET",
                         headers: {
@@ -45,7 +49,7 @@ function Reservation() {
         };
 
         void fetchReservations();
-    }, []);
+    }, [menuId]);
 
     // 예매 한 건의 상세 조회
     const openReservationDetail = async (reservation) => {
@@ -64,7 +68,9 @@ function Reservation() {
 
         try {
             const response = await fetch(
-                `http://localhost/api/admin/reservations/${encodeURIComponent(reservationId)}`,
+                isCancellationManagement
+                    ? `http://localhost/api/admin/reservation-cancellations/${reservationId}`
+                    : `http://localhost/api/admin/reservations/${reservationId}`,
                 {
                     method: "GET",
                     headers: {
@@ -153,21 +159,44 @@ function Reservation() {
 
     const getStatusClass = (status) => {
         switch (status) {
-            case "결제 완료":
-            case "PAID":
             case "CONFIRMED":
                 return "status-completed";
-            case "결제 대기":
+
             case "PENDING":
                 return "status-pending";
-            case "취소":
+
             case "CANCELLED":
                 return "status-cancelled";
-            case "환불 완료":
-            case "REFUNDED":
-                return "status-refunded";
+
+            case "CANCELREQUEST":
+                return "status-cancel-request";
+
+            case "EXPIRED":
+                return "status-expired";
+
             default:
                 return "status-pending";
+        }
+    };
+    const getStatusLabel = (status) => {
+        switch (status) {
+            case "PENDING":
+                return "결제 대기";
+
+            case "CONFIRMED":
+                return "예매 확정";
+
+            case "CANCELLED":
+                return "취소 완료";
+
+            case "CANCELREQUEST":
+                return "취소 요청";
+
+            case "EXPIRED":
+                return "결제 시간 만료";
+
+            default:
+                return "상태 미확인";
         }
     };
 
@@ -183,13 +212,78 @@ function Reservation() {
             </div>
         );
     }
+    const handleCancellationAction = async (detail, action) => {
+        const orderDetailId = detail.ordersDetailId;
+
+        if (orderDetailId == null) {
+            alert("주문 상세 ID를 찾을 수 없습니다.");
+            return;
+        }
+
+        const actionLabel = action === "approve" ? "취소 승인" : "반려";
+
+        if (!window.confirm(`이 취소 요청을 ${actionLabel} 처리하시겠습니까?`)) {
+            return;
+        }
+
+        try {
+            setCancellationActionLoading(orderDetailId);
+
+            const response = await fetch(
+                `/api/admin/reservation-cancellations/${orderDetailId}/${action}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Accept: "application/json",
+                    },
+                    credentials: "include",
+                }
+            );
+
+            if (!response.ok) {
+                const message = await response.text();
+                throw new Error(
+                    message || `${actionLabel} 실패 (${response.status})`
+                );
+            }
+
+            alert(`${actionLabel} 처리되었습니다.`);
+
+            // 처리한 좌석은 취소 요청 목록에서 제거
+            const remainingDetails = reservationDetail.filter(
+                (item) => item.orderDetailId !== orderDetailId
+            );
+
+            setReservationDetail(remainingDetails);
+
+            // 해당 주문에 남은 취소 요청 좌석이 없으면 목록에서도 제거
+            if (remainingDetails.length === 0) {
+                const selectedOrderId = selectedReservation?.ordersId;
+
+                setReservations((prev) =>
+                    prev.filter((item) => item.ordersId !== selectedOrderId)
+                );
+
+                closeReservationDetail();
+            }
+        } catch (err) {
+            console.error(`${actionLabel} 오류:`, err);
+            alert(err.message || `${actionLabel} 처리 중 오류가 발생했습니다.`);
+        } finally {
+            setCancellationActionLoading(null);
+        }
+    };
 
     return (
         <div className="reservation-page">
             <div className="reservation-header">
                 <div>
-                    <h2>예매 관리</h2>
-                    <p>전체 회원의 예매 내역을 확인할 수 있습니다.</p>
+                    <h2>{isCancellationManagement ? "취소관리" : "예매 관리"}</h2>
+                    <p>
+                        {isCancellationManagement
+                            ? "취소 요청된 예매 내역을 확인할 수 있습니다."
+                            : "전체 회원의 예매 내역을 확인할 수 있습니다."}
+                    </p>
                 </div>
                 <span className="reservation-count">총 {reservations.length}건</span>
             </div>
@@ -313,13 +407,43 @@ function Reservation() {
 
                                                         <div className="reservation-detail-cell">
                                                             <span>상태</span>
+
                                                             <strong>
-                                                                <span
-                                                                    className={`reservation-status ${getStatusClass(detail.status)}`}
-                                                                >
-                                                                    {detail.status ?? "상태 미확인"}
-                                                                </span>
+                                                            <span
+                                                                className={`reservation-status ${getStatusClass(detail.status)}`}
+                                                            >
+                                                                {getStatusLabel(detail.status)}
+                                                            </span>
                                                             </strong>
+
+                                                            {isCancellationManagement &&
+                                                                detail.status === "CANCELREQUEST" && (
+                                                                    <div className="reservation-cancellation-actions">
+                                                                        <button
+                                                                            type="button"
+                                                                            className="cancellation-approve-button"
+                                                                            disabled={cancellationActionLoading !== null}
+                                                                            onClick={() =>
+                                                                                handleCancellationAction(detail, "approve")
+                                                                            }
+                                                                        >
+                                                                            {cancellationActionLoading === detail.orderDetailId
+                                                                                ? "처리 중..."
+                                                                                : "취소 승인"}
+                                                                        </button>
+
+                                                                        <button
+                                                                            type="button"
+                                                                            className="cancellation-reject-button"
+                                                                            disabled={cancellationActionLoading !== null}
+                                                                            onClick={() =>
+                                                                                handleCancellationAction(detail, "reject")
+                                                                            }
+                                                                        >
+                                                                            반려
+                                                                        </button>
+                                                                    </div>
+                                                                )}
                                                         </div>
                                                     </div>
                                                 ))}

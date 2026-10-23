@@ -215,3 +215,43 @@
         overflow-x: auto;
     }
 }
+.reservation-cancellation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.reservation-cancellation-actions button {
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.cancellation-approve-button {
+    color: #ffffff;
+    background: #4f46e5;
+    border: 1px solid #4f46e5;
+}
+
+.cancellation-approve-button:hover:not(:disabled) {
+    background: #4338ca;
+}
+
+.cancellation-reject-button {
+    color: #b91c1c;
+    background: #ffffff;
+    border: 1px solid #fecaca;
+}
+
+.cancellation-reject-button:hover:not(:disabled) {
+    background: #fef2f2;
+}
+
+.reservation-cancellation-actions button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}

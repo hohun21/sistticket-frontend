@@ -21,6 +21,7 @@ import FindId from "./member/FindId.jsx";
 import FindPassword from "./member/FindPassword.jsx";
 import Reservation from "./admin/Reservation.jsx";
 
+
 // 공연 관련 컴포넌트
 import List_customer from "./concert/List_customer";
 import Detail from "./concert/Detail.jsx";
@@ -61,6 +62,9 @@ function App() {
                         path="reservations"
                         element={<Reservation menuId="reservations"/>}
                     />
+                    <Route
+                        path="reservations/cancellations"
+                        element={<Reservation menuId="cancellations"/>}/>
                     <Route
                         path="members"
                         element={<AdminMembers menuId="members" />}

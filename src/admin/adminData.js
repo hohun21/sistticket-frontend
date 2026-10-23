@@ -1,7 +1,13 @@
 export const adminMenuItems = [
     { id: "dashboard", path: "/admin", icon: "▦", label: "대시보드" },
     { id: "concerts", path: "http://localhost/settings/main", icon: "♫", label: "공연 관리" },
-    { id: "reservations", path: "/admin/reservations", icon: "▤", label: "예매 관리" },
+    { id: "reservations", path: "/admin/reservations", icon: "▤", label: "예매 관리",
+    children: [{
+        id: "cancellations",
+        path: "/admin/reservations/cancellations",
+        icon: "↳",
+        label: "취소 관리"
+    }]},
     { id: "members", path: "/admin/members", icon: "♙", label: "회원 관리" },
     { id: "revenue", path: "/admin/revenue", icon: "₩", label: "매출 통계" },
 ];

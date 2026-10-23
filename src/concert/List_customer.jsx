@@ -262,7 +262,7 @@ export default function List_customer() {
     <div className={styles.page}>
       <header className={styles.hero}>
         <div className={styles.heroInner}>
-          <a href="http://localhost/" className={styles.brand}>
+          <a href="http://localhost:5173/" className={styles.brand}>
             SIST TICKET
           </a>
 

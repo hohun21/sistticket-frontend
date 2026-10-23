@@ -26,12 +26,17 @@ import AdminDashboard from "./admin/AdminDashboard";
 import AdminPlaceholderPage from "./admin/AdminPlaceholderPage";
 import AdminMembers from "./admin/AdminMembers.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
+import SettingsMain from "./admin/settings/SettingsMain.jsx";
 
 // 회원 관련 컴포넌트
 import Login from "./member/Login.jsx";
 import Signup from "./member/Signup.jsx";
 import FindId from "./member/FindId.jsx";
 import FindPassword from "./member/FindPassword.jsx";
+
+
+// 주문 관련 컴포넌트
+//import PaymentCheckout from "./payment/PaymentCheckout.jsx";
 
 function App() {
   return (
@@ -50,6 +55,7 @@ function App() {
       <Route path="/payment/checkout" element={<PaymentCheckout />} />
       <Route path="/payment/result" element={<PaymentResult />} />
 
+
       {/* 마이페이지 */}
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/mypage/myreviews" element={<MyReviews />} />
@@ -57,28 +63,31 @@ function App() {
       <Route path="/mypage/edit" element={<Edit />} />
       <Route path="/mypage/withdraw" element={<Withdraw />} />
 
-      {/* 관리자 */}
-      <Route element={<AdminRoute />}>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
-          <Route
-            path="concerts"
-            element={<AdminPlaceholderPage menuId="concerts" />}
-          />
-          <Route
-            path="reservations"
-            element={<AdminPlaceholderPage menuId="reservations" />}
-          />
-          <Route
-            path="members"
-            element={<AdminMembers menuId="members" />}
-          />
-          <Route
-            path="revenue"
-            element={<AdminPlaceholderPage menuId="revenue" />}
-          />
-        </Route>
-      </Route>
+            {/* 관리자 페이지 라우트 (중복된 블록 통합) */}
+            <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<AdminLayout />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route
+                        //path="concerts"
+                        // element={<AdminPlaceholderPage menuId="concerts" />}
+                        path="settings/main"
+                         element={<SettingsMain menuId="concerts" />}
+                    />
+                    <Route
+                        path="reservations"
+                        element={<AdminPlaceholderPage menuId="reservations" />}
+                    />
+                    <Route
+                        path="members"
+                        element={<AdminMembers menuId="members" />}
+                    />
+                    <Route
+                        path="revenue"
+                        element={<AdminPlaceholderPage menuId="revenue" />}
+                    />
+                </Route>
+            </Route>
+
 
       {/* 로그인 및 회원가입 */}
       <Route path="/member/login" element={<Login />} />

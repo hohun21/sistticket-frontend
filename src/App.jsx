@@ -33,6 +33,8 @@ import AdminMembers from "./admin/AdminMembers.jsx";
 import AdminRoute from "./admin/AdminRoute.jsx";
 import SettingsMain from "./admin/settings/SettingsMain.jsx";
 import Reservation from "./admin/Reservation.jsx";
+import ActorManage from "./admin/settings/ActorManage.jsx";
+import VenueManage from "./admin/settings/VenueManage.jsx"
 
 function App() {
     return (
@@ -69,6 +71,15 @@ function App() {
                         path="settings/main"
                         element={<SettingsMain menuId="concerts" />}
                     />
+
+                    {/*배우 관리 */}
+                    <Route 
+                        path="settings/actor" 
+                        element={<ActorManage />} />
+                        {/*배우 관리 */}
+                    <Route 
+                        path="settings/venue" 
+                        element={<VenueManage />} />
 
                     {/* 예매 관리 */}
                     <Route

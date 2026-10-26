@@ -63,7 +63,7 @@ export default function SettingsMain() {
                                     <p className="card-text">출연진 정보 및 프로필 등록을 관리합니다.</p>
                                 </div>
                                 <Link 
-                                    to="http://localhost/settings/actor" 
+                                    to="/admin/settings/actor" 
                                     className="btn btn-outline-success w-100 rounded-pill mt-auto"
                                 >
                                     이동하기 
@@ -96,7 +96,7 @@ export default function SettingsMain() {
                                     <p className="card-text">공연장 위치, 좌석 배치 및 수용 인원 정보를 관리합니다.</p>
                                 </div>
                                 <Link 
-                                    to="http://localhost/settings/venue" 
+                                    to="/admin/settings/venue" 
                                     className="btn btn-outline-warning w-100 rounded-pill mt-auto text-dark"
                                 >
                                     이동하기 

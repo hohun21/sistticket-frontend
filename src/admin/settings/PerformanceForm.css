@@ -1,0 +1,211 @@
+/* =========================
+   PerformanceForm 전용 모던 대시보드 스타일
+========================= */
+
+body {
+    background-color: #f8f9fc !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #202938;
+}
+
+/* 전체 컨테이너 넓고 여유 있게 확장 */
+.perf-form-container {
+    width: 100%;
+    max-width: 1150px !important;
+    margin: 40px auto !important;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* 맨 위 상단 뒤로가기 버튼 영역 */
+.perf-top-bar {
+    margin-bottom: 24px;
+}
+
+.page-link-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    background-color: #ffffff;
+    color: #495057;
+    border: 1px solid #e8ebf2;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(25, 35, 60, 0.02);
+    cursor: pointer;
+}
+
+.page-link-back:hover {
+    background-color: #f5f5fa;
+    color: #7456df;
+    border-color: #dcdff0;
+}
+
+/* 기간 안내 배너 */
+.alert-info-banner {
+    background-color: #f0eaff !important;
+    border: 1px solid #dfd3ff !important;
+    color: #7456df !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 16px 20px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(116, 86, 223, 0.04);
+}
+
+/* 대제목 */
+.perf-main-title {
+    color: #202938 !important;
+    font-size: 26px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.8px;
+    margin-bottom: 32px !important;
+}
+
+/* 좌우 2분할 그리드 레이아웃 */
+.perf-split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
+    margin-bottom: 32px;
+}
+
+/* 개별 카드 디자인 */
+.form-card {
+    background: #ffffff !important;
+    border: 1px solid #e8ebf2 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 20px rgba(25, 35, 60, 0.03) !important;
+    padding: 32px !important;
+    box-sizing: border-box;
+}
+
+.form-card h4 {
+    font-size: 18px !important;
+    font-weight: 750 !important;
+    color: #202938 !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8ebf2;
+}
+
+/* 라벨 및 간격 넉넉하게 띄우기 */
+.form-label {
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    color: #495467 !important;
+    margin-bottom: 8px !important;
+    display: block;
+    text-align: left;
+}
+
+/* 입력창 및 셀렉트 UI 높이감과 여백 */
+.form-control, .form-select {
+    height: 46px !important;
+    border: 1px solid #e0e5ee !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    color: #344054 !important;
+    background-color: #ffffff !important;
+    padding: 0 16px !important;
+    transition: all 0.2s ease !important;
+    width: 100%;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #7456df !important;
+    box-shadow: 0 0 0 3px rgba(116, 86, 223, 0.12) !important;
+    outline: none !important;
+}
+
+/* 오른쪽 배역 리스트 스크롤 박스 및 개별 아이템 테두리 박스 */
+.perf-role-list-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.perf-role-item-box {
+    background: #fafbfc;
+    border: 1px solid #e8ebf2;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.perf-role-item-box:hover {
+    border-color: #dcdff0;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(25, 35, 60, 0.02);
+}
+
+.perf-role-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.perf-role-name {
+    font-weight: 750;
+    font-size: 15px;
+    color: #202938;
+}
+
+.perf-role-desc {
+    font-size: 12px;
+    color: #667085;
+    background: #f1f3f9;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+/* 하단 저장 버튼 영역 (충분한 상단 여백 확보) */
+.perf-submit-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-theme-primary {
+    background: #7456df !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    border-radius: 14px !important;
+    padding: 16px 32px !important;
+    height: 54px !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 16px rgba(116, 86, 223, 0.3) !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-theme-primary:hover {
+    background: #6243cf !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(116, 86, 223, 0.4) !important;
+}
+
+/* 반응형 화면 축소 시 세로 정렬로 전환 */
+@media (max-width: 992px) {
+    .perf-split-layout {
+        grid-template-columns: 1fr;
+    }
+}

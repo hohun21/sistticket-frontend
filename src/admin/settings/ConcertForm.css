@@ -1,0 +1,100 @@
+/* =========================
+   콘서트 등록/수정 폼 전용 스타일
+========================= */
+
+.concert-detail-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 32px 20px;
+    color: #202938;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8f9fc;
+    min-height: 100vh;
+}
+
+.concert-detail-container *, 
+.concert-detail-container *::before, 
+.concert-detail-container *::after {
+    box-sizing: border-box;
+}
+
+/* 상단 뒤로가기 버튼 */
+.page-link-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 18px;
+    background-color: #ffffff;
+    color: #495057;
+    border: 1px solid #e8ebf2;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(25, 35, 60, 0.02);
+    cursor: pointer;
+}
+
+.page-link-back:hover {
+    background-color: #f5f5fa;
+    color: #7456df;
+    border-color: #dcdff0;
+}
+
+/* 콘텐츠 카드 디자인 */
+.content-card {
+    background: #ffffff;
+    border: 1px solid #e8ebf2;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(25, 35, 60, 0.03);
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+/* 폼 라벨 및 컨트롤 스타일 */
+.form-label {
+    font-weight: 700;
+    font-size: 13px;
+    color: #495467;
+    margin-bottom: 6px;
+}
+
+.form-control, .form-select {
+    height: 42px;
+    border: 1px solid #e0e5ee;
+    border-radius: 9px !important;
+    font-size: 13px;
+    color: #344054;
+    background-color: #ffffff;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #8063e7;
+    box-shadow: 0 0 0 3px rgba(128, 99, 231, 0.12);
+    outline: none;
+}
+
+/* 테마 메인 버튼 */
+.btn-theme-primary {
+    background: #7456df !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 12px 20px !important;
+    transition: all 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    width: 100%;
+}
+
+.btn-theme-primary:hover {
+    background: #6243cf !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(116, 86, 223, 0.25) !important;
+}

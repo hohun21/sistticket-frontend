@@ -35,7 +35,11 @@ import SettingsMain from "./admin/settings/SettingsMain.jsx";
 import Reservation from "./admin/Reservation.jsx";
 import ActorManage from "./admin/settings/ActorManage.jsx";
 import VenueManage from "./admin/settings/VenueManage.jsx"
-
+import ConcertManage from "./admin/settings/ConcertManage.jsx";
+import ConcertDetail from "./admin/settings/ConcertDetail.jsx";
+import ConcertForm from "./admin/settings/ConcertForm.jsx";
+import RoleManagement from "./admin/settings/RoleManage.jsx";
+import PerformanceForm from "./admin/settings/PerformanceForm.jsx";
 function App() {
     return (
         <Routes>
@@ -71,12 +75,23 @@ function App() {
                         path="settings/main"
                         element={<SettingsMain menuId="concerts" />}
                     />
+                  {/* 콘서트 및 상세정보 관리 */}
+<Route path="settings/concert" element={<ConcertManage />} />
+<Route path="settings/concert/:id" element={<ConcertDetail />} />
+<Route path="settings/concert/new" element={<ConcertForm />} />
+<Route path="settings/concert/edit/:id" element={<ConcertForm />} />    
 
-                    {/*배우 관리 */}
+{/* 배역 및 회차 관리 */}
+<Route path="settings/concert/:concertId/roles" element={<RoleManagement />} />
+<Route path="settings/concert/:concertId/performance/new" element={<PerformanceForm />} />
+{/* 3. 회차 및 캐스팅 수정 폼 (경로 순서 맞추기) */}
+<Route path="settings/concert/:concertId/performance/:performanceId/edit" element={<PerformanceForm />} />
+{/*배우 관리 */}
                     <Route 
                         path="settings/actor" 
                         element={<ActorManage />} />
-                        {/*배우 관리 */}
+
+                    {/*장소 관리 */}
                     <Route 
                         path="settings/venue" 
                         element={<VenueManage />} />

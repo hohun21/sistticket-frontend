@@ -1,0 +1,356 @@
+/* ==========================================================
+   ConcertManage 대시보드 전용 독립 스타일 (타 페이지 간섭 차단)
+   ========================================================== */
+
+.concert-admin-container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 28px;
+    color: #202938;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #f8f9fc;
+    min-height: 100vh;
+}
+
+.concert-admin-container *, 
+.concert-admin-container *::before, 
+.concert-admin-container *::after {
+    box-sizing: border-box;
+}
+
+/* 상단 뒤로가기 버튼 */
+.concert-admin-container .concert-admin-back-btn {
+    padding: 9px 18px;
+    background-color: #ffffff;
+    color: #495057;
+    border: 1px solid #e8ebf2;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(25, 35, 60, 0.02);
+    display: inline-flex;
+    align-items: center;
+}
+
+.concert-admin-container .concert-admin-back-btn:hover {
+    background-color: #f5f5fa;
+    color: #7456df;
+    border-color: #dcdff0;
+}
+
+/* 툴바 영역 */
+.concert-toolbar-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 1px solid #e8ebf2;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(25, 35, 60, 0.04);
+}
+
+.concert-search-form {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    margin: 0;
+    align-items: center;
+}
+
+/* 검색 및 등록 버튼들 전용 클래스 (타 페이지 오염 방지) */
+.concert-admin-search-btn {
+    background: #7456df !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+}
+
+.concert-admin-search-btn:hover {
+    background: #6243cf !important;
+}
+
+.concert-admin-reset-btn {
+    background-color: #ffffff !important;
+    color: #53647b !important;
+    border: 1px solid #e0e5ee !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+}
+
+.concert-admin-reset-btn:hover {
+    background-color: #f8f9fc !important;
+    color: #202938 !important;
+}
+
+.concert-admin-register-btn {
+    background: #7456df !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 0 18px !important;
+    height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+.concert-admin-register-btn:hover {
+    background: #6243cf !important;
+    color: #ffffff !important;
+}
+
+/* 탭 메뉴 */
+.concert-admin-pills {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+    margin-bottom: 28px !important;
+}
+
+.concert-admin-pills li {
+    list-style: none !important;
+    margin: 0 !important;
+}
+
+.concert-admin-pill-link {
+    background: #ffffff !important;
+    color: #53647b !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border-radius: 10px !important;
+    padding: 9px 20px !important;
+    border: 1px solid #e8ebf2 !important;
+    box-shadow: 0 2px 6px rgba(25, 35, 60, 0.02) !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.concert-admin-pill-link:hover {
+    background: #f0eaff !important;
+    color: #7456df !important;
+    border-color: #dcdff0 !important;
+}
+
+.concert-admin-pill-link.active {
+    background: #7456df !important;
+    color: #ffffff !important;
+    border-color: #7456df !important;
+    box-shadow: 0 4px 12px rgba(116, 86, 223, 0.25) !important;
+}
+
+/* 입력창 공통 */
+.concert-admin-container input,
+.concert-admin-container select,
+.concert-admin-container .form-control,
+.concert-admin-container .form-select {
+    background-color: #ffffff !important;
+    color: #344054 !important;
+    height: 44px !important;
+    line-height: 42px !important;
+    border: 1px solid #e0e5ee !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+}
+
+/* 3열(3x3) Grid */
+.concert-grid-3 {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    width: 100% !important;
+}
+
+.concert-card-item {
+    background: #ffffff;
+    border: 1px solid #e8ebf2;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(25, 35, 60, 0.04);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.concert-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(25, 35, 60, 0.09);
+    border-color: #dcdff0;
+}
+
+.concert-card-img-wrap {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e8ebf2;
+}
+
+.concert-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.concert-no-image {
+    width: 100%;
+    height: 100%;
+    background-color: #e4e7ec;
+    color: #667085;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 6px;
+}
+
+.concert-card-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: left;
+}
+
+.concert-card-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: #263247 !important;
+    margin-bottom: 10px !important;
+}
+
+.concert-card-info {
+    font-size: 13px !important;
+    color: #53647b !important;
+    margin-bottom: 6px !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 카드 하단 버튼 영역 */
+.concert-card-footer {
+    padding: 14px 18px 18px;
+    background: #ffffff;
+    display: flex;
+    gap: 8px;
+}
+
+.concert-card-edit-btn {
+    flex: 1;
+    background-color: #ffffff !important;
+    color: #53647b !important;
+    border: 1px solid #e8ebf2 !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    padding: 10px !important;
+    cursor: pointer !important;
+}
+
+.concert-card-edit-btn:hover {
+    background-color: #f8f9fc !important;
+    color: #7456df !important;
+}
+
+.concert-card-detail-btn {
+    flex: 1;
+    background: #7456df !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    padding: 10px !important;
+    cursor: pointer !important;
+    text-align: center;
+}
+
+.concert-card-detail-btn:hover {
+    background: #6243cf !important;
+}
+
+/* 페이징 */
+.concert-admin-nav {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 36px !important;
+}
+
+.concert-admin-pagination {
+    display: flex !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+    gap: 6px !important;
+    align-items: center !important;
+}
+
+.concert-admin-pagination .page-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 38px !important;
+    height: 38px !important;
+    padding: 0 14px !important;
+    color: #53647b !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e0e5ee !important;
+    border-radius: 9px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+}
+
+.concert-admin-pagination .page-item.active .page-link {
+    background-color: #7456df !important;
+    border-color: #7456df !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 992px) {
+    .concert-grid-3 {
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+    .concert-toolbar-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .concert-search-form {
+        flex-direction: column;
+    }
+}

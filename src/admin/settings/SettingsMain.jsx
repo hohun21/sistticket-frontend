@@ -33,7 +33,7 @@ export default function SettingsMain() {
                                     <p className="card-text">공연 등록 및 캐스팅, 일정 조율 정보를 체계적으로 관리합니다.</p>
                                 </div>
                                 <Link 
-                                    to="http://localhost/settings/concert" 
+                                    to="/admin/settings/concert" 
                                     className="btn btn-outline-primary w-100 rounded-pill mt-auto"
                                 >
                                     이동하기 
